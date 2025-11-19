@@ -58,7 +58,7 @@ ROOT_URLCONF = 'scout_hub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'scout_hub/templates'], # MODIFIED
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

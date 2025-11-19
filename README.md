@@ -1,5 +1,16 @@
 # ScoutHub
 
+## Technologies Used
+
+This project utilizes the following technologies:
+
+-   **Backend:**
+    -   Python 3.x
+    -   Django (Web Framework)
+    -   PostgreSQL (Database)
+-   **Frontend:**
+    -   HTML5
+
 ## Known Bugs
 
 ### Corrupted Commit Message (Fixed)
@@ -19,3 +30,8 @@ After attempting to switch the database backend from SQLite to PostgreSQL and re
 This process successfully switched the project to use PostgreSQL as the backend database.
 
 ![Screenshot of database backend mismatch](docs/images/db_mismatch_error.png)
+
+### Player Image Not Displayed (Resolved)
+The player images were not displaying on the homepage due to a typo in the `web/templates/web/home.html` template. The template was incorrectly trying to access `player.image.url` assuming `image` was an ImageField, whereas the `Player` model uses a `URLField` named `image_url`.
+
+**Resolution:** The template reference was corrected from `player.image.url` to `player.image_url`.

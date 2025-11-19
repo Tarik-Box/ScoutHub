@@ -1,12 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScoutHub - Home</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}ScoutHub - Home{% endblock %}
+
+{% block content %}
     <h1>Welcome to ScoutHub!</h1>
     <p>This is the homepage. More content coming soon.</p>
-</body>
-</html>
+
+    <h2>Top 5 League Teams</h2>
+    {% if teams %}
+        <ul>
+            {% for team in teams %}
+                <li>
+                    <strong>{{ team.name }}</strong> ({{ team.short_name }})
+                    {% if team.crest_url %}
+                        <img src="{{ team.crest_url }}" alt="{{ team.name }} Crest" width="20" height="20">
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No teams available.</p>
+    {% endif %}
+
+    <h2>Top 5 League Players</h2>
+    {% if players %}
+        <ul>
+            {% for player in players %}
+                <li>
+                    <strong>{{ player.name }}</strong> - {{ player.team.name }} ({{ player.position }})
+                    {% if player.image_url %}
+                        <img src="{{ player.image_url }}" alt="{{ player.name }} Image" width="20" height="20">
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No players available.</p>
+    {% endif %}
+{% endblock content %}
