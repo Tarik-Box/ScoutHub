@@ -3,7 +3,7 @@ from django.contrib.auth.models import User # Import User model
 
 class Team(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    short_name = models.CharField(max_length=10, unique=True)
+    short_name = models.CharField(max_length=10, unique=False) # MODIFIED: unique=False
     crest_url = models.URLField(max_length=500, blank=True, null=True)
     founded = models.IntegerField(blank=True, null=True)
     venue_name = models.CharField(max_length=255, blank=True, null=True)
@@ -38,7 +38,7 @@ class Report(models.Model):
     def __str__(self):
         return f"Report by {self.user.username}: {self.title}"
 
-class LastAPICall(models.Model):
+class LastAPICall(models.Model): # NEW MODEL
     """
     Records the last time a specific API endpoint was called for a given resource
     to help manage API rate limits.
