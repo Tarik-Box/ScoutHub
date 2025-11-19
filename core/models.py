@@ -37,3 +37,21 @@ class Report(models.Model):
 
     def __str__(self):
         return f"Report by {self.user.username}: {self.title}"
+
+class LastAPICall(models.Model):
+    """
+    Records the last time a specific API endpoint was called for a given resource
+    to help manage API rate limits.
+    """
+    endpoint_type = models.CharField(max_length=50, help_text="e.g., 'standings', 'top_scorers'")
+    league_id = models.IntegerField()
+    season_year = models.IntegerField()
+    last_call_timestamp = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('endpoint_type', 'league_id', 'season_year',)
+        verbose_name = "Last API Call"
+        verbose_name_plural = "Last API Calls"
+
+    def __str__(self):
+        return f"{self.endpoint_type} for League {self.league_id} in {self.season_year} last called at {self.last_call_timestamp}"
