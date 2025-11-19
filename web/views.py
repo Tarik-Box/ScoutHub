@@ -10,7 +10,8 @@ def home_view(request):
     teams = Team.objects.all()[:5]  # Get top 5 teams
     players = Player.objects.all()[:5] # Get top 5 players
 
-    context = { # Create context dictionary
+    # Create context dictionary
+    context = { 
         'teams': teams, # Add teams to context
         'players': players, # Add players to context
     }

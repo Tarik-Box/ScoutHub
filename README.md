@@ -35,3 +35,13 @@ This process successfully switched the project to use PostgreSQL as the backend 
 The player images were not displaying on the homepage due to a typo in the `web/templates/web/home.html` template. The template was incorrectly trying to access `player.image.url` assuming `image` was an ImageField, whereas the `Player` model uses a `URLField` named `image_url`.
 
 **Resolution:** The template reference was corrected from `player.image.url` to `player.image_url`.
+
+### NoReverseMatch for 'login' URL (Resolved)
+When attempting to access the registration page (`/accounts/register/`), a `NoReverseMatch` exception was raised, indicating that the URL pattern named 'login' could not be found. This occurred because the registration template (`register.html`) contained a link to `{% url 'login' %}`, but the `login` URL pattern was defined within the `accounts` app namespace.
+
+**Resolution:** The template reference in `accounts/templates/accounts/register.html` was corrected from `{% url 'login' %}` to `{% url 'accounts:login' %}` to use the namespaced URL.
+
+### Logout URL Not Accessible (Pending Resolution)
+When attempting to logout by clicking the "Logout" button/link, the application redirects to `/accounts/logout/` which results in a page not found error. This is because Django's built-in `LogoutView` primarily expects a POST request for security, whereas the link in the template is sending a GET request.
+
+**Resolution:** _(Empty for now, pending implementation of the logout form in `base.html`)_
