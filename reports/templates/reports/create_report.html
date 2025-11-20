@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Scouting Report{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Create New Scouting Report</h2>
+    <p>Use the form below to create a new report. You can associate it with multiple teams and players.</p>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.title.errors.as_text }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.content.id_for_label }}" class="form-label">{{ form.content.label }}</label>
+                    {{ form.content }}
+                    {% if form.content.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.content.errors.as_text }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h5>{{ form.teams.label }}</h5>
+                        <div class="form-check-scroll">
+                            {{ form.teams }}
+                        </div>
+                        {% if form.teams.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.teams.errors.as_text }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <h5>{{ form.players.label }}</h5>
+                        <div class="form-check-scroll">
+                            {{ form.players }}
+                        </div>
+                         {% if form.players.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.players.errors.as_text }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-check mb-3">
+                    {{ form.is_public }}
+                    <label class="form-check-label" for="{{ form.is_public.id_for_label }}">
+                        {{ form.is_public.label }}
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Report</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-check-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+/* By default, Django renders checkbox multiple choice fields without wrapping, let's fix that */
+.form-check-scroll .form-check {
+    display: block;
+    margin-bottom: 5px;
+}
+</style>
+{% endblock %}
