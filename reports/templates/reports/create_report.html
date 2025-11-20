@@ -1,88 +1,67 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Create Scouting Report{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <h2>Create New Scouting Report</h2>
-    <p>Use the form below to create a new report. You can associate it with multiple teams and players.</p>
+    <p>Use the form below to create a new report. Select a team to see its players.</p>
     
     <div class="card">
         <div class="card-body">
-            <form method="post" novalidate>
+            <form method="post" novalidate 
+                  data-players-data="{{ players_data_json|escapejs }}"
+                  data-team-select-id="{{ form.team.id_for_label }}"
+                  data-player-select-id="{{ form.player.id_for_label }}">
                 {% csrf_token %}
                 
-                <div class="mb-3">
-                    <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
-                    {{ form.title }}
-                    {% if form.title.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ form.title.errors.as_text }}
+                {# Render form fields from Meta.fields #}
+                {% for field in form.visible_fields %}
+                    {% if field.name != 'team' and field.name != 'player' %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ field.errors.as_text }}
+                                </div>
+                            {% endif %}
                         </div>
                     {% endif %}
-                </div>
+                {% endfor %}
 
-                <div class="mb-3">
-                    <label for="{{ form.content.id_for_label }}" class="form-label">{{ form.content.label }}</label>
-                    {{ form.content }}
-                    {% if form.content.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ form.content.errors.as_text }}
-                        </div>
-                    {% endif %}
-                </div>
-
+                {# Manually render the new team and player dropdowns #}
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <h5>{{ form.teams.label }}</h5>
-                        <div class="form-check-scroll">
-                            {{ form.teams }}
-                        </div>
-                        {% if form.teams.errors %}
+                        <label for="{{ form.team.id_for_label }}" class="form-label">{{ form.team.label }}</label>
+                        {{ form.team }}
+                        {% if form.team.errors %}
                             <div class="invalid-feedback d-block">
-                                {{ form.teams.errors.as_text }}
+                                {{ form.team.errors.as_text }}
                             </div>
                         {% endif %}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <h5>{{ form.players.label }}</h5>
-                        <div class="form-check-scroll">
-                            {{ form.players }}
-                        </div>
-                         {% if form.players.errors %}
+                        <label for="{{ form.player.id_for_label }}" class="form-label">{{ form.player.label }}</label>
+                        {{ form.player }}
+                         {% if form.player.errors %}
                             <div class="invalid-feedback d-block">
-                                {{ form.players.errors.as_text }}
+                                {{ form.player.errors.as_text }}
                             </div>
                         {% endif %}
                     </div>
-                </div>
-
-                <div class="form-check mb-3">
-                    {{ form.is_public }}
-                    <label class="form-check-label" for="{{ form.is_public.id_for_label }}">
-                        {{ form.is_public.label }}
-                    </label>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Report</button>
-                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+                <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
 </div>
 
-<style>
-.form-check-scroll {
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 4px;
-}
-/* By default, Django renders checkbox multiple choice fields without wrapping, let's fix that */
-.form-check-scroll .form-check {
-    display: block;
-    margin-bottom: 5px;
-}
-</style>
+{% endblock %}
+
+{% block extra_body %}
+<script src="{% static 'reports/js/report_form.js' %}"></script>
 {% endblock %}

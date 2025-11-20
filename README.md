@@ -1,4 +1,22 @@
+The README file will be updated after each change, added feature, tech and commit. It will be the reference for the project.
+
 # ScoutHub
+
+ScoutHub is a Django-based web application for football scouting. It allows users to view football data and create their own scouting reports.
+
+## Features
+
+### Current Features
+-   User Authentication (Registration, Login, Logout).
+-   Homepage displaying top league teams and top scorers fetched from an external API.
+-   User Dashboard to view and manage scouting reports.
+-   Creation of scouting reports with a dynamic form where selecting a team populates the relevant players.
+
+### Upcoming Features
+-   Fetching and storing the full player list for every team from the API.
+-   Editing and Deleting scouting reports.
+-   Viewing individual reports.
+-   User profile management.
 
 ## Technologies Used
 
@@ -10,38 +28,5 @@ This project utilizes the following technologies:
     -   PostgreSQL (Database)
 -   **Frontend:**
     -   HTML5
-
-## Known Bugs
-
-### Corrupted Commit Message (Fixed)
-During development, a commit message for `8ccf41f` (later removed via force push) was accidentally corrupted, including unintended script usage output. This was due to an oversight in handling multi-line strings in the `git commit` command within the environment.
-
-**Resolution:** The commit was completely removed from the repository history using `git reset --hard` and `git push --force`, and the changes were re-committed with a corrected message.
-
-![Screenshot of corrupted commit message](docs/images/corrupted_commit_message.png)
-
-### Database Backend Mismatch (Resolved)
-After attempting to switch the database backend from SQLite to PostgreSQL and resolving a corrupted commit message via `git reset --hard` and re-commit, the project inexplicably reverted to using SQLite. This occurred despite `scout_hub/settings.py` being correctly configured for PostgreSQL via `DATABASE_URL` from `.env`. All migrations, superuser accounts, and fetched API data were being stored in `db.sqlite3`.
-
-**Resolution:** The issue stemmed from an unclear state of the PostgreSQL database. The fix involved:
-1.  **Ensuring PostgreSQL Database was Truly Empty:** Manually deleting and recreating the `neondb` on Neon.tech.
-2.  **Cleaning Local State:** Deleting `db.sqlite3` and all existing `core` app migrations (`0*.py` files).
-3.  **Rebuilding Database:** Running `makemigrations`, `migrate`, `createsuperuser`, and `fetch_football_data` to populate the newly reset PostgreSQL database.
-This process successfully switched the project to use PostgreSQL as the backend database.
-
-![Screenshot of database backend mismatch](docs/images/db_mismatch_error.png)
-
-### Player Image Not Displayed (Resolved)
-The player images were not displaying on the homepage due to a typo in the `web/templates/web/home.html` template. The template was incorrectly trying to access `player.image.url` assuming `image` was an ImageField, whereas the `Player` model uses a `URLField` named `image_url`.
-
-**Resolution:** The template reference was corrected from `player.image.url` to `player.image_url`.
-
-### NoReverseMatch for 'login' URL (Resolved)
-When attempting to access the registration page (`/accounts/register/`), a `NoReverseMatch` exception was raised, indicating that the URL pattern named 'login' could not be found. This occurred because the registration template (`register.html`) contained a link to `{% url 'login' %}`, but the `login` URL pattern was defined within the `accounts` app namespace.
-
-**Resolution:** The template reference in `accounts/templates/accounts/register.html` was corrected from `{% url 'login' %}` to `{% url 'accounts:login' %}` to use the namespaced URL.
-
-### Logout URL Not Accessible (Pending Resolution)
-When attempting to logout by clicking the "Logout" button/link, the application redirects to `/accounts/logout/` which results in a page not found error. This is because Django's built-in `LogoutView` primarily expects a POST request for security, whereas the link in the template is sending a GET request.
-
-**Resolution:** _(Empty for now, pending implementation of the logout form in `base.html`)_
+    -   CSS3 (via Bootstrap classes, implicitly)
+    -   JavaScript
