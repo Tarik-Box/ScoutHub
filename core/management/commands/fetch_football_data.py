@@ -1,4 +1,5 @@
 import datetime
+import time
 import traceback
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -37,16 +38,14 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Starting data fetch for League ID: {league_id}, Season: {season_year}"))
 
         client = FootballAPIClient()
-
-        # Define rate limit period (e.g., 23 hours for a 24-hour limit with some buffer)
         RATE_LIMIT_PERIOD = datetime.timedelta(hours=23)
 
-        # Process Standings (Teams)
+        # Step 1: Fetch Standings to ensure teams are in the database
         self.fetch_and_process_data(
             client=client,
             endpoint_type='standings',
-            fetch_func=client.get_standings,
-            process_func=self._process_standings_data,
+            fetch_func=lambda: client.get_standings(league_id, season_year),
+            process_func=lambda data: self._process_standings_data(data, league_id, season_year),
             league_id=league_id,
             season_year=season_year,
             rate_limit_period=RATE_LIMIT_PERIOD,
@@ -55,21 +54,56 @@ class Command(BaseCommand):
             error_msg="Failed to fetch or process standings data."
         )
 
-        # Process Top Scorers (Players)
-        self.fetch_and_process_data(
-            client=client,
-            endpoint_type='top_scorers',
-            fetch_func=client.get_top_scorers,
-            process_func=self._process_top_scorers_data,
+        # Step 2: Fetch all players for each team
+        self.stdout.write(self.style.SUCCESS("\nStarting full player roster fetch for all teams..."))
+        all_players_endpoint = 'all_players_batch'
+        
+        last_call_obj, created = LastAPICall.objects.get_or_create(
+            endpoint_type=all_players_endpoint,
             league_id=league_id,
             season_year=season_year,
-            rate_limit_period=RATE_LIMIT_PERIOD,
-            force_update=force_update,
-            success_msg="Top scorers updated successfully.",
-            error_msg="Failed to fetch or process top scorers data."
+            defaults={'last_call_timestamp': timezone.now() - RATE_LIMIT_PERIOD * 2}
         )
 
-        self.stdout.write(self.style.SUCCESS('Data fetching process completed.'))
+        time_since_last_call = timezone.now() - last_call_obj.last_call_timestamp
+
+        if force_update or time_since_last_call > RATE_LIMIT_PERIOD:
+            self.stdout.write(self.style.WARNING(f"Fetching new player rosters from API..."))
+            teams = Team.objects.all()
+            if not teams:
+                self.stdout.write(self.style.ERROR("No teams found in the database. Please fetch standings first."))
+                return
+
+            self.stdout.write(f"Found {teams.count()} teams. Fetching players for each...")
+            
+            for i, team in enumerate(teams):
+                self.stdout.write(f"  ({i+1}/{teams.count()}) Fetching players for {team.name} (API ID: {team.api_id})...")
+                try:
+                    # The actual API call
+                    api_data = client.get_players_for_team(team.api_id, league_id, season_year)
+                    if api_data and api_data.get('response'):
+                        self._process_all_players_data(api_data['response'], team, season_year)
+                    else:
+                        self.stdout.write(self.style.WARNING(f"    No players found in API response for {team.name} or response was empty/malformed."))
+                    
+                    # CRITICAL: Wait between requests to respect API rate limits
+                    self.stdout.write(f"    Waiting 6 seconds before next request...")
+                    time.sleep(6)
+
+                except Exception as e:
+                    self.stdout.write(self.style.ERROR(f"    An error occurred while fetching players for {team.name}: {e}"))
+                    self.stdout.write(self.style.ERROR(traceback.format_exc()))
+
+            # After the loop completes, update the timestamp for the batch operation
+            last_call_obj.last_call_timestamp = timezone.now()
+            last_call_obj.save()
+            self.stdout.write(self.style.SUCCESS("Full player roster fetch completed."))
+        else:
+            self.stdout.write(self.style.NOTICE(f"Full player roster recently updated ({time_since_last_call} ago). Skipping API calls."))
+
+        self.stdout.write(self.style.SUCCESS('\nData fetching process completed.'))
+
+        self.stdout.write(self.style.SUCCESS('\nData fetching process completed.'))
 
     def fetch_and_process_data(self, client, endpoint_type, fetch_func, process_func, league_id, season_year, rate_limit_period, force_update, success_msg, error_msg):
         self.stdout.write(f"Checking {endpoint_type} update status...")
@@ -85,9 +119,11 @@ class Command(BaseCommand):
         if force_update or time_since_last_call > rate_limit_period:
             self.stdout.write(self.style.WARNING(f"Fetching new {endpoint_type} data from API..."))
             try:
-                api_data = fetch_func(league_id, season_year)
+                # The fetch_func is now a lambda with pre-set arguments
+                api_data = fetch_func()
                 if api_data and api_data.get('response'):
-                    process_func(api_data['response'], league_id, season_year)
+                    # The process_func is also a lambda
+                    process_func(api_data['response'])
                     last_call_obj.last_call_timestamp = timezone.now()
                     last_call_obj.save()
                     self.stdout.write(self.style.SUCCESS(success_msg))
@@ -127,21 +163,19 @@ class Command(BaseCommand):
                 team_short_name = team_api_data.get('code') # API-Football v3 often uses 'code' for short name
                 team_crest_url = team_api_data.get('logo')
 
-                if team_id_from_api and team_name:
+                if team_id_from_api:
                     team, created = Team.objects.update_or_create(
-                        name=team_name,
+                        api_id=team_id_from_api,
                         defaults={
+                            'name': team_name,
                             'short_name': team_short_name if team_short_name else team_name[:10],
                             'crest_url': team_crest_url,
-                            # Founded and venue_name are typically not in /standings endpoint
-                            # and would require a separate /teams endpoint call for each team_id
-                            # For simplicity now, we leave them as null/blank if not found.
                         }
                     )
                     if created:
-                        self.stdout.write(f"Created Team: {team.name}")
+                        self.stdout.write(f"Created Team: {team.name} (API ID: {team.api_id})")
                     else:
-                        self.stdout.write(f"Updated Team: {team.name}")
+                        self.stdout.write(f"Updated Team: {team.name} (API ID: {team.api_id})")
                 else:
                     self.stdout.write(self.style.WARNING(f"Skipping team with incomplete data: {team_api_data}"))
 
@@ -216,3 +250,53 @@ class Command(BaseCommand):
                     self.stdout.write(f"Updated Player: {player.name} ({player.team.short_name})")
             else:
                 self.stdout.write(self.style.WARNING(f"Skipping player with incomplete data: {player_api_data}"))
+
+    @transaction.atomic
+    def _process_all_players_data(self, data_response, team_obj, season_year):
+        # API-Football /players response structure is the same as /players/topscorers
+        if not data_response:
+            self.stdout.write(self.style.WARNING(f"No player data to process for team {team_obj.name}."))
+            return
+
+        for player_entry in data_response:
+            player_api_data = player_entry.get('player', {})
+            
+            player_id_from_api = player_api_data.get('id')
+            player_name = player_api_data.get('name')
+            player_nationality = player_api_data.get('nationality')
+            player_image_url = player_api_data.get('photo')
+
+            player_dob_str = player_api_data.get('birth', {}).get('date')
+            player_dob = None
+            if player_dob_str:
+                try:
+                    player_dob = datetime.datetime.strptime(player_dob_str, '%Y-%m-%d').date()
+                except ValueError:
+                    self.stdout.write(self.style.WARNING(f"Could not parse DOB '{player_dob_str}' for player {player_name}."))
+
+            # In this context, we already have the team object, so we don't need to find it from stats
+            # We can find the position from the statistics array
+            player_position = None
+            statistics_list = player_entry.get('statistics', [])
+            for stats in statistics_list:
+                if stats.get('league', {}).get('season') == season_year:
+                    player_position = stats.get('games', {}).get('position')
+                    break
+
+            if player_id_from_api and player_name and team_obj:
+                player, created = Player.objects.update_or_create(
+                    name=player_name,
+                    team=team_obj,
+                    defaults={
+                        'nationality': player_nationality,
+                        'position': player_position,
+                        'date_of_birth': player_dob,
+                        'image_url': player_image_url,
+                    }
+                )
+                if created:
+                    self.stdout.write(f"Created Player: {player.name} ({player.team.short_name})")
+                else:
+                    self.stdout.write(f"Updated Player: {player.name} ({player.team.short_name})")
+            else:
+                self.stdout.write(self.style.WARNING(f"Skipping player with incomplete data for team {team_obj.name}: {player_api_data}"))

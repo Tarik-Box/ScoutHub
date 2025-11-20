@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User # Import User model
 
 class Team(models.Model):
+    api_id = models.IntegerField(unique=True, null=True, blank=True)
     name = models.CharField(max_length=255, unique=True)
     short_name = models.CharField(max_length=10, unique=False) # MODIFIED: unique=False
     crest_url = models.URLField(max_length=500, blank=True, null=True)

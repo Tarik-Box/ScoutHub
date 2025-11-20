@@ -32,3 +32,6 @@ When attempting to access the registration page (`/accounts/register/`), a `NoRe
 When attempting to logout by clicking the "Logout" button/link, the application redirects to `/accounts/logout/` which results in a page not found error. This is because Django's built-in `LogoutView` primarily expects a POST request for security, whereas the link in the template is sending a GET request.
 
 **Resolution:** _(Empty for now, pending implementation of the logout form in `base.html`)_
+
+### Dependent Player Dropdown Not Populating (Pending Resolution)
+The "Create Report" form includes a "Team" dropdown and a "Player" dropdown. The "Player" dropdown is intended to be dynamically populated with players from the selected team via JavaScript. Currently, this functionality is not working, and the player list does not update when a team is selected. This is likely due to an issue with the static JavaScript file loading or execution.
