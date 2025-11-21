@@ -52,3 +52,13 @@ After fixing the JavaScript for the dependent dropdowns, a new bug appeared. Upo
 **Resolution:** This was a server-side validation issue.
 1.  **Root Cause Identified:** When the form was first loaded, the `Player` field's queryset (its list of valid choices) was correctly set to be empty. When the form was submitted, Django's validation logic was still using this original empty queryset, so the submitted player was never considered a valid choice.
 2.  **The Fix:** The `create_report` view was modified. Now, when a `POST` request is received, the code first inspects the submitted `team` ID. It then uses that ID to dynamically update the `player` field's queryset on the form instance to include all players from that team. Only then does the validation (`form.is_valid()`) proceed. This ensures the validator has the correct list of players to check against, resolving the error.
+
+### Incomplete Form Submission Allowed (Resolved)
+The "Create Report" form allowed submission even when required fields like 'player' or 'title' were left empty. While server-side validation would catch this, it provided a poor user experience.
+
+**Resolution:** The form's UX was improved with client-side validation.
+1.  **Root Cause Identified:** The form lacked real-time client-side validation to prevent the user from clicking "Save" on an incomplete form.
+2.  **The Fix:**
+    *   The "Save Report" button was disabled by default in the HTML template.
+    *   The `report_form.js` script was refactored to add event listeners to all required inputs (`title`, `content`, `team`, `player`).
+    *   A validation function now runs on every input change, checking if all required fields are filled. The "Save Report" button is only enabled when the entire form is valid, providing immediate visual feedback to the user.

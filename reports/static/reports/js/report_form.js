@@ -1,57 +1,77 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Find the form which holds our data attributes
     const form = document.querySelector('#create-report-form');
     if (!form) {
-        // If this form isn't on the page, do nothing.
         return;
     }
 
+    // --- Get Element References ---
     const playersData = JSON.parse(form.dataset.playersData);
-    const teamSelectId = form.dataset.teamSelectId;
-    const playerSelectId = form.dataset.playerSelectId;
+    const teamSelect = document.getElementById(form.dataset.teamSelectId);
+    const playerSelect = document.getElementById(form.dataset.playerSelectId);
+    const titleInput = document.getElementById('id_title');
+    const contentInput = document.getElementById('id_content'); // Django's default ID for a textarea
+    const saveReportBtn = document.getElementById('save-report-btn');
 
-    const teamSelect = document.getElementById(teamSelectId);
-    const playerSelect = document.getElementById(playerSelectId);
+    if (!teamSelect || !playerSelect || !titleInput || !contentInput || !saveReportBtn) {
+        console.error("One or more form elements were not found!");
+        return;
+    }
 
-    if (!teamSelect || !playerSelect) return;
+    // --- Core Logic Functions ---
+    
+    function checkFormValidityAndToggleButton() {
+        const isTitleValid = titleInput.value.trim() !== '';
+        const isContentValid = contentInput.value.trim() !== '';
+        const isTeamValid = teamSelect.value !== '';
+        const isPlayerValid = playerSelect.value !== '' && !playerSelect.disabled;
+        
+        // Enable the button only if all conditions are met
+        if (isTitleValid && isContentValid && isTeamValid && isPlayerValid) {
+            saveReportBtn.disabled = false;
+        } else {
+            saveReportBtn.disabled = true;
+        }
+    }
 
     function updatePlayerOptions(selectedTeamId) {
-        // Clear current player options
-        playerSelect.innerHTML = ''; 
+        playerSelect.innerHTML = ''; // Clear current player options
 
         if (selectedTeamId && playersData[selectedTeamId] && playersData[selectedTeamId].length > 0) {
-            // Case 1: Team is selected and has players
             playerSelect.disabled = false;
-            
-            // Add a default placeholder first
             const placeholderOption = new Option('--- Select a Player ---', '');
             playerSelect.add(placeholderOption);
 
-            // Populate with players of the selected team
             const players = playersData[selectedTeamId];
             players.forEach(player => {
                 const option = new Option(player.name, player.id);
                 playerSelect.add(option);
             });
         } else if (selectedTeamId) {
-            // Case 2: Team is selected but has no players
             playerSelect.disabled = true;
             const noPlayersOption = new Option('No players found for this team', '');
             playerSelect.add(noPlayersOption);
         } else {
-            // Case 3: No team is selected (initial state)
             playerSelect.disabled = true;
             const placeholderOption = new Option('--- Select a Team First ---', '');
             playerSelect.add(placeholderOption);
         }
+        // After updating player options, check the form's overall validity
+        checkFormValidityAndToggleButton();
     }
 
-    // Add event listener to the team dropdown
+
+    // --- Attach Event Listeners ---
+    
+    titleInput.addEventListener('input', checkFormValidityAndToggleButton);
+    contentInput.addEventListener('input', checkFormValidityAndToggleButton);
+    playerSelect.addEventListener('change', checkFormValidityAndToggleButton);
+    
     teamSelect.addEventListener('change', function() {
-        const selectedTeamId = this.value;
-        updatePlayerOptions(selectedTeamId);
+        // When the team changes, we must first update the player options,
+        // which then triggers its own validity check.
+        updatePlayerOptions(teamSelect.value);
     });
 
-    // Initial state setup on page load
+    // --- Initial State Setup ---
     updatePlayerOptions(teamSelect.value);
 });

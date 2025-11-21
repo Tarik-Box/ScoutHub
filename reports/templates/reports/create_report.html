@@ -22,6 +22,7 @@
                         <div class="mb-3">
                             <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                             {{ field }}
+                            <div id="title-error" class="invalid-feedback d-block"></div>
                             {% if field.errors %}
                                 <div class="invalid-feedback d-block">
                                     {{ field.errors.as_text }}
@@ -36,6 +37,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="{{ form.team.id_for_label }}" class="form-label">{{ form.team.label }}</label>
                         {{ form.team }}
+                        <div id="team-error" class="invalid-feedback d-block"></div>
                         {% if form.team.errors %}
                             <div class="invalid-feedback d-block">
                                 {{ form.team.errors.as_text }}
@@ -44,16 +46,16 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="{{ form.player.id_for_label }}" class="form-label">{{ form.player.label }}</label>
-                        {{ form.player }}
-                        {% if form.player.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.player.errors.as_text }}
-                            </div>
-                        {% endif %}
-                    </div>
+                                                {{ form.player }}
+                                                <div id="player-error" class="invalid-feedback d-block"></div>
+                                                 {% if form.player.errors %}
+                                                    <div class="invalid-feedback d-block">
+                                                        {{ form.player.errors.as_text }}
+                                                    </div>
+                                                {% endif %}                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save Report</button>
+                <button type="submit" id="save-report-btn" class="btn btn-primary" disabled>Save Report</button>
                 <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
