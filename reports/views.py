@@ -8,55 +8,6 @@ import json
 
 
 @login_required
-def create_report(request):
-    """
-    Handles the creation of a new scouting report.
-
-    On GET, displays an empty form.
-    On POST, validates submitted data, including dynamically populated
-    player choices, and saves the new report.
-    """
-    if request.method == "POST":
-        form = ReportForm(request.POST)
-
-        # Dynamically update the queryset for the 'player' field before validation.
-        team_id = request.POST.get("team")
-        if team_id:
-            form.fields["player"].queryset = Player.objects.filter(team_id=team_id)
-
-        if form.is_valid():
-            # Create the report instance but don't save to DB yet
-            report = form.save(commit=False)
-            report.user = request.user
-            report.save()  # Save the report object to get an ID
-
-            # Now handle the ManyToMany fields from the form
-            team = form.cleaned_data.get("team")
-            player = form.cleaned_data.get("player")
-
-            # Clear any existing relations and add the new ones
-            report.teams.set([team] if team else [])
-            report.players.set([player] if player else [])
-
-            # Add a success message for report creation
-            messages.success(request, "Report created successfully!")
-            return redirect("dashboard:user_dashboard")
-    else: # GET request
-        form = ReportForm()
-
-    # Prepare data for the dependent dropdowns
-    players = Player.objects.select_related("team").all()
-    players_data = {}
-    for player_obj in players:
-        if player_obj.team.id not in players_data:
-            players_data[player_obj.team.id] = []
-        players_data[player_obj.team.id].append({"id": player_obj.id, "name": player_obj.name})
-
-    context = {"form": form, "players_data_json": json.dumps(players_data)}
-    return render(request, "reports/create_report.html", context)
-
-
-@login_required
 def toggle_report_visibility(request, report_id):
     """
     Toggles the 'is_public' status of a report.
@@ -150,13 +101,94 @@ def edit_report(request, report_id):
     # Prepare data for the dependent dropdowns for the template
     # This is similar to create_report to ensure JS has data on both GET/POST
     players_in_db = Player.objects.select_related("team").all()
+    print("DEBUG (edit_report): Number of players in queryset:", players_in_db.count()) # NEW DEBUG PRINT
     players_data = {}
     for player_obj in players_in_db:
         if player_obj.team.id not in players_data:
             players_data[player_obj.team.id] = []
         players_data[player_obj.team.id].append(
             {"id": player_obj.id, "name": player_obj.name}
-        )
+        ) # MISSING LINE ADDED
+    print("DEBUG (edit_report): players_data before json.dumps:", players_data) # NEW DEBUG PRINT
+
+    context = {
+        "form": form,
+        "report": report,  # Pass the report object for dynamic title and other context
+        "players_data_json": json.dumps(players_data),
+    }
+    return render(request, "reports/create_report.html", context)
+
+
+@login_required
+def delete_report(request, report_id):
+    """
+    Handles the deletion of a scouting report.
+    Only allows deletion by the report owner via a POST request.
+    """
+    report = get_object_or_404(Report, pk=report_id)
+
+    # Access control: Only the owner can delete the report
+    if report.user != request.user:
+        raise Http404("You do not have permission to delete this report.")
+
+    if request.method == "POST":
+        report.delete()
+        messages.success(request, "Report deleted successfully!")
+        return redirect("dashboard:user_dashboard")
+    
+    # If it's a GET request to the delete URL, perhaps render a confirmation page
+    # For now, we'll just redirect to the dashboard if not a POST.
+    # In a real application, you might want a confirmation modal/page.
+    messages.error(request, "Invalid request for report deletion.")
+    return redirect("dashboard:user_dashboard")
+
+
+@login_required
+def create_report(request):
+    """
+    Handles the creation of a new scouting report.
+
+    On GET, displays an empty form.
+    On POST, validates submitted data, including dynamically populated
+    player choices, and saves the new report.
+    """
+    if request.method == "POST":
+        form = ReportForm(request.POST)
+
+        # Dynamically update the queryset for the 'player' field before validation.
+        team_id = request.POST.get("team")
+        if team_id:
+            form.fields["player"].queryset = Player.objects.filter(team_id=team_id)
+
+        if form.is_valid():
+            # Create the report instance but don't save to DB yet
+            report = form.save(commit=False)
+            report.user = request.user
+            report.save()  # Save the report object to get an ID
+
+            # Now handle the ManyToMany fields from the form
+            team = form.cleaned_data.get("team")
+            player = form.cleaned_data.get("player")
+
+            # Clear any existing relations and add the new ones
+            report.teams.set([team] if team else [])
+            report.players.set([player] if player else [])
+
+            # Add a success message for report creation
+            messages.success(request, "Report created successfully!")
+            return redirect("dashboard:user_dashboard")
+    else: # GET request
+        form = ReportForm()
+
+    # Prepare data for the dependent dropdowns
+    players = Player.objects.select_related("team").all()
+    print("DEBUG (create_report): Number of players in queryset:", players.count()) # NEW DEBUG PRINT
+    players_data = {}
+    for player_obj in players:
+        if player_obj.team.id not in players_data:
+            players_data[player_obj.team.id] = []
+        players_data[player_obj.team.id].append({"id": player_obj.id, "name": player_obj.name})
+    print("DEBUG (create_report): players_data before json.dumps:", players_data) # NEW DEBUG PRINT
 
     context = {"form": form, "players_data_json": json.dumps(players_data)}
     return render(request, "reports/create_report.html", context)

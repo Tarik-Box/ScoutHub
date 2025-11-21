@@ -5,13 +5,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Get Element References ---
-    const playersData = JSON.parse(form.dataset.playersData);
+    const rawPlayersData = form.dataset.playersData;
+    console.log("DEBUG: Raw form.dataset.playersData string:", rawPlayersData);
+
+    const playersData = JSON.parse(rawPlayersData);
+    console.log("DEBUG: Parsed playersData object:", playersData);
+    console.log("DEBUG: Keys in playersData:", Object.keys(playersData));
+
     const teamSelect = document.getElementById(form.dataset.teamSelectId);
     const playerSelect = document.getElementById(form.dataset.playerSelectId);
     const titleInput = document.getElementById('id_title');
     const contentInput = document.getElementById('id_content'); // Django's default ID for a textarea
     const saveReportBtn = document.getElementById('save-report-btn');
     let initialPlayerId = form.dataset.initialPlayerId; // Use 'let' for reassignability
+
+    console.log("DEBUG: Initial Player ID from data-attribute:", initialPlayerId);
+    console.log("DEBUG: Initial Team Select Value:", teamSelect.value);
 
     if (!teamSelect || !playerSelect || !titleInput || !contentInput || !saveReportBtn) {
         console.error("One or more form elements were not found!");
@@ -35,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updatePlayerOptions(selectedTeamId) {
+        console.log("DEBUG: updatePlayerOptions called with selectedTeamId:", selectedTeamId);
         playerSelect.innerHTML = ''; // Clear current player options
 
         if (selectedTeamId && playersData[selectedTeamId] && playersData[selectedTeamId].length > 0) {
@@ -46,10 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
             players.forEach(player => {
                 const option = new Option(player.name, player.id);
                 playerSelect.add(option);
+                console.log("DEBUG: Added player option:", player.name, "with value:", player.id);
             });
-            // --- NEW: Try to select initial player if editing ---
+            // --- Try to select initial player if editing ---
             if (initialPlayerId && teamSelect.value === selectedTeamId) {
-                playerSelect.value = initialPlayerId;
+                playerSelect.value = Number(initialPlayerId); // Convert to number for strict comparison
                 // Clear initialPlayerId after it's used to prevent re-selection if team changes
                 initialPlayerId = null;
             }
