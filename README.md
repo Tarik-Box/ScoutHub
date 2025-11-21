@@ -20,7 +20,7 @@ ScoutHub is a Django-based web application designed for football enthusiasts and
 This project utilizes the following technologies:
 
 -   **Backend:**
-    -   Python 3.x
+    -   Python 3.13.9
     -   Django (Web Framework)
     -   PostgreSQL (Database)
     -   `python-decouple`: For managing environment variables.
@@ -40,7 +40,7 @@ Follow these instructions to set up and run the project locally.
 
 ### Prerequisites
 
--   Python 3.8+
+-   Python 3.13.9
 -   `pip` (Python package installer)
 -   `git`
 -   PostgreSQL database (local or remote, e.g., Neon.tech)
@@ -106,7 +106,7 @@ To start the Django development server:
 .venv/bin/python manage.py runserver
 ```
 
-The application will be accessible at `http://127.0.0.1:8000/`.
+The application will be accessible at `http://127.0.0.1:8000/`, `http://localhost:8000/`.
 
 ## Usage
 

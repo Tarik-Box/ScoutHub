@@ -7,4 +7,5 @@ urlpatterns = [
     path("create/", views.create_report, name="create_report"),
     path("<int:report_id>/", views.report_detail, name="report_detail"),
     path("<int:report_id>/edit/", views.edit_report, name="edit_report"),
+    path("<int:report_id>/toggle_visibility/", views.toggle_report_visibility, name="toggle_report_visibility"),
 ]

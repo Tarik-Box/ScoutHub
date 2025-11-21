@@ -1,30 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
+{# This template is used for both creating a new scouting report and editing an existing one. #}
 
-{% block title %}Create Scouting Report{% endblock %}
+{% block title %}Create/Edit Scouting Report{% endblock %} {# Dynamic title if needed for accessibility #}
 
 {% block content %}
 <div class="container mt-4">
+    <!-- Dynamic page heading based on whether a report object is passed (edit mode) or not (create mode) -->
     <h2>{% if report %}Edit Report: {{ report.title }}{% else %}Create New Scouting Report{% endif %}</h2>
     <p>Use the form below to create a new report. Select a team to see its players.</p>
     
     <div class="card">
         <div class="card-body">
+            <!-- Report Form -->
             <form method="post" novalidate id="create-report-form"
-                  data-players-data='{{ players_data_json|safe }}'
-                  data-team-select-id="{{ form.team.auto_id }}"
-                  data-player-select-id="{{ form.player.auto_id }}"
-                  data-initial-player-id="{{ form.player.initial.id|default_if_none:'' }}">
-                {% csrf_token %}
+                  data-players-data='{{ players_data_json|safe }}' {# JSON data for dynamic player dropdown #}
+                  data-team-select-id="{{ form.team.auto_id }}" {# ID of the team select element #}
+                  data-player-select-id="{{ form.player.auto_id }}" {# ID of the player select element #}
+                  data-initial-player-id="{{ form.player.initial.id|default_if_none:'' }}"> {# Initial player ID for edit mode #}
+                {% csrf_token %} {# Django's CSRF protection token #}
                 
-                {# Render form fields from Meta.fields #}
+                <!-- Loop to render form fields defined in ReportForm's Meta.fields, excluding team and player -->
                 {% for field in form.visible_fields %}
                     {% if field.name != 'team' and field.name != 'player' %}
                         <div class="mb-3">
                             <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                             {{ field }}
-                            <div id="title-error" class="invalid-feedback d-block"></div>
+                            <!-- Placeholder for client-side JavaScript validation errors -->
+                            <div id="{{ field.name }}-error" class="invalid-feedback d-block"></div>
                             {% if field.errors %}
+                                <!-- Server-side validation errors -->
                                 <div class="invalid-feedback d-block">
                                     {{ field.errors.as_text }}
                                 </div>
@@ -33,29 +38,37 @@
                     {% endif %}
                 {% endfor %}
 
-                {# Manually render the new team and player dropdowns #}
+                <!-- Manually render the new team and player dropdowns -->
                 <div class="row">
+                    <!-- Team selection dropdown -->
                     <div class="col-md-6 mb-3">
                         <label for="{{ form.team.id_for_label }}" class="form-label">{{ form.team.label }}</label>
                         {{ form.team }}
+                        <!-- Placeholder for client-side JavaScript validation errors -->
                         <div id="team-error" class="invalid-feedback d-block"></div>
                         {% if form.team.errors %}
+                            <!-- Server-side validation errors -->
                             <div class="invalid-feedback d-block">
                                 {{ form.team.errors.as_text }}
                             </div>
                         {% endif %}
                     </div>
+                    <!-- Player selection dropdown, dynamically populated by JavaScript -->
                     <div class="col-md-6 mb-3">
                         <label for="{{ form.player.id_for_label }}" class="form-label">{{ form.player.label }}</label>
-                                                {{ form.player }}
-                                                <div id="player-error" class="invalid-feedback d-block"></div>
-                                                 {% if form.player.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {{ form.player.errors.as_text }}
-                                                    </div>
-                                                {% endif %}                    </div>
+                        {{ form.player }}
+                        <!-- Placeholder for client-side JavaScript validation errors -->
+                        <div id="player-error" class="invalid-feedback d-block"></div>
+                         {% if form.player.errors %}
+                            <!-- Server-side validation errors -->
+                            <div class="invalid-feedback d-block">
+                                {{ form.player.errors.as_text }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
 
+                <!-- Submit and Cancel buttons -->
                 <button type="submit" id="save-report-btn" class="btn btn-primary" disabled>{% if report %}Update Report{% else %}Save Report{% endif %}</button>
                 <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-secondary">Cancel</a>
             </form>
@@ -66,5 +79,6 @@
 {% endblock %}
 
 {% block extra_body %}
+    <!-- Link to the JavaScript file for dynamic dropdowns and client-side validation -->
     <script src="{% static 'reports/js/report_form.js' %}"></script>
 {% endblock %}

@@ -39,21 +39,43 @@ def create_report(request):
             report.players.set([player] if player else [])
 
             # Add a success message for report creation
-            messages.success(request, "Report created successfully!") # NEW
-            return redirect("dashboard:user_dashboard")  # Redirect to dashboard
-    else:
+            messages.success(request, "Report created successfully!")
+            return redirect("dashboard:user_dashboard")
+    else: # GET request
         form = ReportForm()
 
     # Prepare data for the dependent dropdowns
     players = Player.objects.select_related("team").all()
     players_data = {}
-    for player in players:
-        if player.team.id not in players_data:
-            players_data[player.team.id] = []
-        players_data[player.team.id].append({"id": player.id, "name": player.name})
+    for player_obj in players:
+        if player_obj.team.id not in players_data:
+            players_data[player_obj.team.id] = []
+        players_data[player_obj.team.id].append({"id": player_obj.id, "name": player_obj.name})
 
     context = {"form": form, "players_data_json": json.dumps(players_data)}
     return render(request, "reports/create_report.html", context)
+
+
+@login_required
+def toggle_report_visibility(request, report_id):
+    """
+    Toggles the 'is_public' status of a report.
+    Only accessible via POST request by the report owner.
+    """
+    report = get_object_or_404(Report, pk=report_id)
+
+    # Access control: Only the owner can toggle visibility
+    if report.user != request.user:
+        raise Http404("You do not have permission to change the visibility of this report.")
+
+    if request.method == "POST":
+        report.is_public = not report.is_public
+        report.save()
+        messages.success(
+            request, f"Report visibility changed to {'Public' if report.is_public else 'Private'}."
+        )
+    
+    return redirect("reports:report_detail", report_id=report.id)
 
 
 @login_required
@@ -63,8 +85,8 @@ def report_detail(request, report_id):
     """
     report = get_object_or_404(Report, pk=report_id)
 
-    # Ensure that the logged-in user is the author of the report
-    if report.user != request.user:
+    # Ensure that the logged-in user is the author of the report, or if the report is public
+    if report.user != request.user and not report.is_public:
         raise Http404("You do not have permission to view this report.")
 
     context = {
@@ -136,9 +158,5 @@ def edit_report(request, report_id):
             {"id": player_obj.id, "name": player_obj.name}
         )
 
-    context = {
-        "form": form,
-        "report": report,  # Pass the report object for dynamic title and other context
-        "players_data_json": json.dumps(players_data),
-    }
+    context = {"form": form, "players_data_json": json.dumps(players_data)}
     return render(request, "reports/create_report.html", context)
