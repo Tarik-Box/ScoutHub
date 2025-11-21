@@ -11,6 +11,11 @@ class Team(models.Model):
     crest_url = models.URLField(max_length=500, blank=True, null=True)
     founded = models.IntegerField(blank=True, null=True)
     venue_name = models.CharField(max_length=255, blank=True, null=True)
+    position = models.IntegerField(null=True, blank=True)  # Team's position in league standings
+    points = models.IntegerField(null=True, blank=True)  # Team's points in league standings
+    form = models.CharField(
+        max_length=5, null=True, blank=True
+    )  # Team's recent form (e.g., WWLDD)
 
     def __str__(self):
         return self.name
@@ -25,6 +30,8 @@ class Player(models.Model):
     position = models.CharField(max_length=50, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
     image_url = models.URLField(max_length=500, blank=True, null=True)
+    goals = models.IntegerField(default=0)
+    assists = models.IntegerField(default=0)
 
     class Meta:
         unique_together = (

@@ -66,7 +66,23 @@ class Command(BaseCommand):
             error_msg="Failed to fetch or process standings data.",
         )
 
-        # Step 2: Fetch all players for each team
+        # Step 2: Fetch Top Scorers
+        self.fetch_and_process_data(
+            client=client,
+            endpoint_type="topscorers",
+            fetch_func=lambda: client.get_top_scorers(league_id, season_year),
+            process_func=lambda data: self._process_top_scorers_data(
+                data, league_id, season_year
+            ),
+            league_id=league_id,
+            season_year=season_year,
+            rate_limit_period=RATE_LIMIT_PERIOD,
+            force_update=force_update,
+            success_msg="Top scorers updated successfully.",
+            error_msg="Failed to fetch or process top scorers data.",
+        )
+
+        # Step 3: Fetch all players for each team
         self.stdout.write(
             self.style.SUCCESS("\nStarting full player roster fetch for all teams...")
         )
@@ -228,6 +244,9 @@ class Command(BaseCommand):
         for standing_group in standings:
             for team_standing in standing_group:
                 team_api_data = team_standing.get("team", {})
+                team_position = team_standing.get("rank")
+                team_points = team_standing.get("points")
+                team_form = team_standing.get("form")
 
                 team_id_from_api = team_api_data.get("id")
                 team_name = team_api_data.get("name")
@@ -245,6 +264,9 @@ class Command(BaseCommand):
                                 team_short_name if team_short_name else team_name[:10]
                             ),
                             "crest_url": team_crest_url,
+                            "position": team_position,
+                            "points": team_points,
+                            "form": team_form,
                         },
                     )
                     if created:
@@ -299,11 +321,14 @@ class Command(BaseCommand):
             team_obj = None
             current_team_name = None
             player_position = None
+            player_goals = 0
+            player_assists = 0
 
             for stats in statistics_list:
                 team_stats = stats.get("team", {})
                 league_stats = stats.get("league", {})
                 games_stats = stats.get("games", {})
+                goals_stats = stats.get("goals", {})
 
                 if (
                     league_stats.get("id") == league_id
@@ -311,6 +336,8 @@ class Command(BaseCommand):
                 ):
                     current_team_name = team_stats.get("name")
                     player_position = games_stats.get("position")
+                    player_goals = goals_stats.get("total") or 0
+                    player_assists = goals_stats.get("assists") or 0
                     break  # Found stats for the current league/season
 
             if current_team_name:
@@ -341,6 +368,8 @@ class Command(BaseCommand):
                         "position": player_position,
                         "date_of_birth": player_dob,
                         "image_url": player_image_url,
+                        "goals": player_goals,
+                        "assists": player_assists,
                     },
                 )
                 if created:
