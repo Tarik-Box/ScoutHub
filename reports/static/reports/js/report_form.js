@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const titleInput = document.getElementById('id_title');
     const contentInput = document.getElementById('id_content'); // Django's default ID for a textarea
     const saveReportBtn = document.getElementById('save-report-btn');
+    let initialPlayerId = form.dataset.initialPlayerId; // Use 'let' for reassignability
 
     if (!teamSelect || !playerSelect || !titleInput || !contentInput || !saveReportBtn) {
         console.error("One or more form elements were not found!");
@@ -46,6 +47,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const option = new Option(player.name, player.id);
                 playerSelect.add(option);
             });
+            // --- NEW: Try to select initial player if editing ---
+            if (initialPlayerId && teamSelect.value === selectedTeamId) {
+                playerSelect.value = initialPlayerId;
+                // Clear initialPlayerId after it's used to prevent re-selection if team changes
+                initialPlayerId = null;
+            }
         } else if (selectedTeamId) {
             playerSelect.disabled = true;
             const noPlayersOption = new Option('No players found for this team', '');

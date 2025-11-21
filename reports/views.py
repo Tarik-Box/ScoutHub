@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
+from django.contrib import messages  # NEW IMPORT
 from django.contrib.auth.decorators import login_required
 from .forms import ReportForm
 from core.models import Team, Player, Report
@@ -37,6 +38,8 @@ def create_report(request):
             report.teams.set([team] if team else [])
             report.players.set([player] if player else [])
 
+            # Add a success message for report creation
+            messages.success(request, "Report created successfully!") # NEW
             return redirect("dashboard:user_dashboard")  # Redirect to dashboard
     else:
         form = ReportForm()
@@ -65,6 +68,77 @@ def report_detail(request, report_id):
         raise Http404("You do not have permission to view this report.")
 
     context = {
-        'report': report
+        "report": report
     }
-    return render(request, 'reports/report_detail.html', context)
+    return render(request, "reports/report_detail.html", context)
+
+
+@login_required
+def edit_report(request, report_id):
+    """
+    Handles editing an existing scouting report.
+
+    On GET, displays a form pre-filled with the report's data.
+    On POST, validates submitted data and updates the report.
+    """
+    report = get_object_or_404(Report, pk=report_id)
+
+    # Access control: Only the owner can edit the report
+    if report.user != request.user:
+        raise Http404("You do not have permission to edit this report.")
+
+    if request.method == "POST":
+        form = ReportForm(request.POST, instance=report)
+
+        # Dynamically update the queryset for the 'player' field before validation.
+        team_id = request.POST.get("team")
+        if team_id:
+            form.fields["player"].queryset = Player.objects.filter(team_id=team_id)
+        # If no team_id is provided, the queryset will remain Player.objects.none()
+        # which means validation for player will always fail unless player is not required.
+
+        if form.is_valid():
+            # Save the main report fields
+            edited_report = form.save(commit=False)
+            edited_report.user = request.user  # Ensure user remains the original author
+            edited_report.save()
+
+            # Handle ManyToMany fields for team and player
+            team = form.cleaned_data.get("team")
+            player = form.cleaned_data.get("player")
+
+            # Update the M2M relations. If empty, clear them.
+            edited_report.teams.set([team] if team else [])
+            edited_report.players.set([player] if player else [])
+
+            messages.success(request, "Report updated successfully!")  # NEW
+            return redirect("reports:report_detail", report_id=report.id)
+    else:  # GET request
+        # Pre-fill the form with existing report data
+        form = ReportForm(instance=report)
+
+        # For GET request, if a team is already selected in the instance,
+        # update the player queryset for the initial display.
+        if report.teams.first():
+            initial_team_id = report.teams.first().id
+            form.fields["player"].queryset = Player.objects.filter(
+                team_id=initial_team_id
+            )
+
+    # Prepare data for the dependent dropdowns for the template
+    # This is similar to create_report to ensure JS has data on both GET/POST
+    players_in_db = Player.objects.select_related("team").all()
+    players_data = {}
+    for player_obj in players_in_db:
+        if player_obj.team.id not in players_data:
+            players_data[player_obj.team.id] = []
+        players_data[player_obj.team.id].append(
+            {"id": player_obj.id, "name": player_obj.name}
+        )
+
+    context = {
+        "form": form,
+        "report": report,  # Pass the report object for dynamic title and other context
+        "players_data_json": json.dumps(players_data),
+    }
+    return render(request, "reports/create_report.html", context)

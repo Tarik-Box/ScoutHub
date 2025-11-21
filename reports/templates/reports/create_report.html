@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Create New Scouting Report</h2>
+    <h2>{% if report %}Edit Report: {{ report.title }}{% else %}Create New Scouting Report{% endif %}</h2>
     <p>Use the form below to create a new report. Select a team to see its players.</p>
     
     <div class="card">
@@ -13,7 +13,8 @@
             <form method="post" novalidate id="create-report-form"
                   data-players-data='{{ players_data_json|safe }}'
                   data-team-select-id="{{ form.team.auto_id }}"
-                  data-player-select-id="{{ form.player.auto_id }}">
+                  data-player-select-id="{{ form.player.auto_id }}"
+                  data-initial-player-id="{{ form.player.initial.id|default_if_none:'' }}">
                 {% csrf_token %}
                 
                 {# Render form fields from Meta.fields #}
@@ -55,7 +56,7 @@
                                                 {% endif %}                    </div>
                 </div>
 
-                <button type="submit" id="save-report-btn" class="btn btn-primary" disabled>Save Report</button>
+                <button type="submit" id="save-report-btn" class="btn btn-primary" disabled>{% if report %}Update Report{% else %}Save Report{% endif %}</button>
                 <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>

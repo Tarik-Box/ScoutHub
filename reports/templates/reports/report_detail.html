@@ -30,6 +30,9 @@
             </ul>
         </div>
         <div class="card-footer text-end">
+            {% if request.user == report.user %}
+                <a href="{% url 'reports:edit_report' report.id %}" class="btn btn-warning me-2">Edit Report</a>
+            {% endif %}
             <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
         </div>
     </div>
