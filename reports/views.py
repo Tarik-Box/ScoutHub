@@ -1,14 +1,28 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .forms import ReportForm
-from core.models import Team, Player
+from core.models import Team, Player, Report
 import json
 
 
 @login_required
 def create_report(request):
+    """
+    Handles the creation of a new scouting report.
+
+    On GET, displays an empty form.
+    On POST, validates submitted data, including dynamically populated
+    player choices, and saves the new report.
+    """
     if request.method == "POST":
         form = ReportForm(request.POST)
+
+        # Dynamically update the queryset for the 'player' field before validation.
+        team_id = request.POST.get("team")
+        if team_id:
+            form.fields["player"].queryset = Player.objects.filter(team_id=team_id)
+
         if form.is_valid():
             # Create the report instance but don't save to DB yet
             report = form.save(commit=False)
@@ -37,3 +51,20 @@ def create_report(request):
 
     context = {"form": form, "players_data_json": json.dumps(players_data)}
     return render(request, "reports/create_report.html", context)
+
+
+@login_required
+def report_detail(request, report_id):
+    """
+    Displays the details of a specific scouting report.
+    """
+    report = get_object_or_404(Report, pk=report_id)
+
+    # Ensure that the logged-in user is the author of the report
+    if report.user != request.user:
+        raise Http404("You do not have permission to view this report.")
+
+    context = {
+        'report': report
+    }
+    return render(request, 'reports/report_detail.html', context)

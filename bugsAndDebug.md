@@ -45,3 +45,10 @@ The "Create Report" form includes a "Team" dropdown and a "Player" dropdown that
     *   A unique ID, `id="create-report-form"`, was added to the `<form>` tag in the `reports/templates/reports/create_report.html` template.
     *   The JavaScript selector was updated to the more specific `document.querySelector('#create-report-form')` to guarantee it selected the correct form.
 This change resolved the issue, and the dropdowns now function as expected.
+
+### Dynamic Dropdown Validation Error (Resolved)
+After fixing the JavaScript for the dependent dropdowns, a new bug appeared. Upon submitting the "Create Report" form, a validation error "Select a valid choice. That choice is not one of the available choices." would appear for the Player field, even when a valid player was selected.
+
+**Resolution:** This was a server-side validation issue.
+1.  **Root Cause Identified:** When the form was first loaded, the `Player` field's queryset (its list of valid choices) was correctly set to be empty. When the form was submitted, Django's validation logic was still using this original empty queryset, so the submitted player was never considered a valid choice.
+2.  **The Fix:** The `create_report` view was modified. Now, when a `POST` request is received, the code first inspects the submitted `team` ID. It then uses that ID to dynamically update the `player` field's queryset on the form instance to include all players from that team. Only then does the validation (`form.is_valid()`) proceed. This ensures the validator has the correct list of players to check against, resolving the error.

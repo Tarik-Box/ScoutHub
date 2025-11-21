@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ report.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Report: {{ report.title }}</h2>
+            <span class="badge bg-secondary">{{ report.is_public|yesno:"Public,Private" }}</span>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Scouted by: {{ report.user.username }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Created on: {{ report.created_at|date:"F d, Y" }} | Last updated: {{ report.updated_at|date:"F d, Y" }}</h6>
+            
+            <hr>
+            
+            <p class="card-text" style="white-space: pre-wrap;">{{ report.content }}</p>
+
+            <hr>
+
+            <h5>Associated Entities:</h5>
+            <ul>
+                {% for team in report.teams.all %}
+                    <li><strong>Team:</strong> {{ team.name }}</li>
+                {% endfor %}
+                {% for player in report.players.all %}
+                    <li><strong>Player:</strong> {{ player.name }} ({{ player.team.short_name }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
