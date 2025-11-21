@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Find the form which holds our data attributes
-    const form = document.querySelector('form');
-    if (!form) return;
+    const form = document.querySelector('#create-report-form');
+    if (!form) {
+        // If this form isn't on the page, do nothing.
+        return;
+    }
 
     const playersData = JSON.parse(form.dataset.playersData);
     const teamSelectId = form.dataset.teamSelectId;

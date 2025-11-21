@@ -1,4 +1,4 @@
-## Known Bugs
+## Bugs & Debugging Log
 
 ### Corrupted Commit Message (Fixed)
 During development, a commit message for `8ccf41f` (later removed via force push) was accidentally corrupted, including unintended script usage output. This was due to an oversight in handling multi-line strings in the `git commit` command within the environment.
@@ -33,5 +33,15 @@ When attempting to logout by clicking the "Logout" button/link, the application 
 
 **Resolution:** _(Empty for now, pending implementation of the logout form in `base.html`)_
 
-### Dependent Player Dropdown Not Populating (Pending Resolution)
-The "Create Report" form includes a "Team" dropdown and a "Player" dropdown. The "Player" dropdown is intended to be dynamically populated with players from the selected team via JavaScript. Currently, this functionality is not working, and the player list does not update when a team is selected. This is likely due to an issue with the static JavaScript file loading or execution.
+### Dependent Player Dropdown Not Populating (Resolved)
+The "Create Report" form includes a "Team" dropdown and a "Player" dropdown that should be dynamically populated via JavaScript. When a team was selected, the player dropdown remained empty.
+
+**Resolution:** The bug was traced through a multi-step debugging process.
+1.  **Initial Hypothesis:** The first assumption was that the JSON data being passed from the Django view to the template was being improperly escaped. This was addressed by applying the `|safe` filter in the template, but the bug persisted.
+2.  **Instrumenting the Code:** To get visibility into the script's execution, the JavaScript file (`report_form.js`) was modified to include extensive `console.log()` statements at every step: reading the data, parsing the JSON, finding the form elements, and handling the `change` event.
+3.  **Browser Console Analysis:** The browser's developer console revealed the root cause. A "DEBUG" message showed that the script was finding a `<form>` element, but it was the wrong one: `<form action="/accounts/logout/">`.
+4.  **Root Cause Identified:** The JavaScript selector `document.querySelector('form')` was too generic. It was selecting the first form in the DOM, which happened to be the logout form in the `base.html` navigation bar, not the intended report creation form. This logout form lacked the `data-players-data` attribute, causing the script to fail with an `"undefined" is not valid JSON` error.
+5.  **The Fix:**
+    *   A unique ID, `id="create-report-form"`, was added to the `<form>` tag in the `reports/templates/reports/create_report.html` template.
+    *   The JavaScript selector was updated to the more specific `document.querySelector('#create-report-form')` to guarantee it selected the correct form.
+This change resolved the issue, and the dropdowns now function as expected.
