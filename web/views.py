@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from core.models import Team, Player # Import Team and Player models
+from core.models import Team, Player  # Import Team and Player models
+
 
 def home_view(request):
     """
@@ -8,11 +9,11 @@ def home_view(request):
     # Fetch a few teams and players from the database
     # For now, just getting all, later we can implement 'top 5' logic
     teams = Team.objects.all()[:5]  # Get top 5 teams
-    players = Player.objects.all()[:5] # Get top 5 players
+    players = Player.objects.all()[:5]  # Get top 5 players
 
     # Create context dictionary
-    context = { 
-        'teams': teams, # Add teams to context
-        'players': players, # Add players to context
+    context = {
+        "teams": teams,  # Add teams to context
+        "players": players,  # Add players to context
     }
-    return render(request, 'web/home.html', context) # Pass context to template
+    return render(request, "web/home.html", context)  # Pass context to template
