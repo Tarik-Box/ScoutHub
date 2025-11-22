@@ -131,3 +131,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "home"  # Already added
 
 LOGIN_URL = "accounts:login"  # NEW LINE: Specify the URL for the login page
+
+
+# Email Configuration for Contact Form
+# For development, use the console backend to print emails to the console.
+# In production, configure with a proper SMTP backend.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'webmaster@scouthub.com'
+SERVER_EMAIL = 'server@scouthub.com'
+
+# Define who gets the contact form messages
+ADMINS = [
+    ('ScoutHub Admin', 'admin@scouthub.com'),
+]
+MANAGERS = ADMINS # Managers get error notifications if configured
