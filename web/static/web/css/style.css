@@ -48,14 +48,14 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, #8E2DE2, #4A00E0);
-    transform: translateX(-100%);
-    transition: transform 1.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transform: translateY(-100%);
+    transition: transform 2.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     opacity: 0.5; /* Added opacity for transparency */
     /* z-index and opacity removed to allow natural stacking to work */
 }
 
 .navbar:has(.navbar-brand:hover) > .hover {
-    transform: translateX(0);
+    transform: translateY(100%);
 }
 
 /* Active Nav Link Indicator */
@@ -289,8 +289,8 @@ main {
     color: white; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
-    border-radius: 10px; /* Rounded corners */
-    font-size: 18px; /* Increase font size */
+    border-radius: 50%; /* Rounded corners */
+    font-size: 16px; /* Increase font size */
     /* box-shadow removed for default state */
     transition: background-color 0.3s, transform 0.3s, border-color 0.3s; /* Smooth transition */
 }
@@ -309,6 +309,9 @@ main {
     color: #38003d;
     text-align: center;
     border-radius: 2rem;
+    padding: 15px 0.5rem; /* Added padding */
+    max-width: 40rem; /* Made the container smaller */
+    margin: 0.5rem auto; /* Centered the container */
 }
 
 .contact-container h3 {
@@ -321,12 +324,9 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0.5rem auto;
-    padding: 1rem 0.5rem;
     gap: 0.5rem;
     font-size: 1.2rem;
 }
-
 .contact-form .input {
     height: 2rem;
     width: 20rem; /* Increased width */
@@ -360,7 +360,7 @@ main {
 
 .contact-form .submit:hover {
     transform: scale(1.1);
-    background-color: #600569;
+    background-color: rgba(142, 45, 226);
 }
 
 .contact-form textarea {
@@ -376,11 +376,6 @@ main {
     height: 15rem;
     resize: none;
     transition: all 1s;
-}
-
-.contact-form textarea:hover {
-    cursor: pointer;
-    background-color: #600569;
 }
 
 .contact-container textarea:focus {
