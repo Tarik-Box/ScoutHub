@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
+from django.http import Http404, HttpResponse # MODIFIED: Added HttpResponse
 from django.contrib import messages  # NEW IMPORT
 from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string # NEW IMPORT
+from weasyprint import HTML as WeasyPrint # NEW IMPORT
 from .forms import ReportForm
 from core.models import Team, Player, Report
 import json
@@ -44,6 +46,41 @@ def report_detail(request, report_id):
         "report": report
     }
     return render(request, "reports/report_detail.html", context)
+
+
+@login_required
+def export_report_pdf(request, report_id):
+    """
+    this view for exportin' a scouting report as a PDF file, you know, for shar'n.
+    it takes the report data, puts it in a nice HTML template, then turns it into PDF.
+    only report owners can download their stuff, for security reasons, obv.
+    """
+    report = get_object_or_404(Report, pk=report_id)
+
+    # Access control: Only the owner can download the report
+    if report.user != request.user:
+        raise Http404("You do not have permission to download this report.")
+
+    # Render HTML content with report data
+    html_string = render_to_string('reports/report_pdf_template.html', {'report': report, 'request': request})
+
+    # Generate PDF using WeasyPrint
+    try:
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="scouting_report_{report.id}.pdf"'
+        
+        # WeasyPrint expects bytes, so encode the HTML string
+        pdf = WeasyPrint(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf()
+        response.write(pdf)
+        
+        return response
+    except Exception as e:
+        messages.error(request, f"Whoops! Couldn't make the PDF file. Error: {e}")
+        # Log this error for later investigation.
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error generating PDF for report {report.id}: {e}", exc_info=True)
+        return redirect('reports:report_detail', report_id=report.id) # Redirect back to report detail page with an error
 
 
 @login_required

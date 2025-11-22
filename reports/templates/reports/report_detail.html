@@ -54,6 +54,8 @@
         <!-- Card footer: Navigation and action buttons -->
         <div class="card-footer text-end">
             {% if request.user == report.user %}
+                <!-- Download PDF button -->
+                <a href="{% url 'reports:export_report_pdf' report.id %}" class="btn btn-info me-2">Download PDF</a>
                 <!-- Delete Form - will be submitted by modal -->
                 <form id="deleteReportForm" action="{% url 'reports:delete_report' report.id %}" method="post" class="d-inline me-2">
                     {% csrf_token %}
