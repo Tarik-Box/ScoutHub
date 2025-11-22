@@ -4,30 +4,39 @@
 {% block title %}Contact Us{% endblock %}
 
 {% block content %}
-<div class="contact-container">
-    <h3>Contact Us</h3>
-    <p class="text-center text-muted mb-4">Have questions? Want to provide feedback? Reach out to us!</p>
-    
-    {% if messages %}
-        <div class="messages mb-3">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="scout-card p-4 shadow-lg rounded">
+                <h2 class="text-center mb-4">Contact Us</h2>
+                <p class="text-center mb-4">Have questions? Want to provide feedback? Reach out to us!</p>
+                
+                {% if messages %}
+                    <div class="messages mb-3">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-    <form method="post" class="contact-form">
-        {% csrf_token %}
-        {% for field in form %}
-            {{ field }}
-            {% for error in field.errors %}
-                <div class="alert alert-danger mt-1">{{ error }}</div>
-            {% endfor %}
-        {% endfor %}
-        <button type="submit" class="submit">Send Message</button>
-    </form>
+                <form method="post" class="contact-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {{ field }}
+                        {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger mt-1">{{ error }}</div>
+                        {% endfor %}
+                    {% endfor %}
+                    <button type="submit" class="btn btn-lg mt-3 scout-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

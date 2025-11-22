@@ -75,3 +75,10 @@ def contact_view(request):
         form = ContactForm(initial=initial_data)
     return render(request, 'web/contact.html', {'form': form})
 
+
+def about_view(request):
+    """
+    this view is for the about page. it just show the template for info 'bout the site.
+    """
+    return render(request, 'web/about.html')
+

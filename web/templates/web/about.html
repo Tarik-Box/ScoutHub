@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="about-page-container">
+    <h2 class="text-center mb-4">About ScoutHub</h2>
+    <p class="text-center mb-4">
+        <strong>ScoutHub</strong> is your premier platform for football scouting. We provide tools for
+        analyzing team and player performance, generating comprehensive reports, and
+        staying updated with the latest football statistics. Our mission is to empower
+        <em>scouts</em>, <em>coaches</em>, and enthusiasts with data-driven insights to make informed decisions.
+    </p>
+    <p class="text-center mb-4">
+        Developed with passion for the beautiful game, ScoutHub aims to be the go-to resource
+        for all your football analysis needs.
+    </p>
+    <p class="text-center mt-5 mb-0">
+        &copy; Idea and Development by: <a href="{% url 'contact' %}">Tarik Ataia</a>
+    </p>
+</div>
+{% endblock %}

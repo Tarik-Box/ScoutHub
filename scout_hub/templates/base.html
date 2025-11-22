@@ -45,6 +45,9 @@
                             <li class="nav-item">
                                 <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %} custom-nav-link" href="{% url 'contact' %}">Contact</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %} custom-nav-link" href="{% url 'about' %}">About</a>
+                            </li>
                             {# Add more general navigation links here later #}
                         </ul>
                         <ul class="navbar-nav">
@@ -99,6 +102,7 @@
                     <li><a href="#"><i class="icon fa-brands fa-x-twitter"></i></a></li>
                     <li><a href="#"><i class="icon fa-brands fa-facebook-f"></i></a></li>
                     <li><a href="{% url 'contact' %}"><i class="icon fa-solid fa-envelope"></i></a></li> {# New Contact Link #}
+                    <li><a href="{% url 'about' %}"><i class="icon fa-solid fa-info-circle"></i></a></li> {# New About Link #}
                     <li><a href="#"><i class="icon fa-solid fa-globe"></i></a></li>
                     <li><a href="#"><i class="icon fa-solid fa-link"></i></a></li>
                     <li><a href="#"><i class="icon fa-brands fa-instagram"></i></a></li>
