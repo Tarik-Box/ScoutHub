@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView  # NEW IMPORT
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm # MODIFIED IMPORT
 from django.urls import reverse_lazy  # NEW IMPORT
 
 
@@ -21,7 +21,7 @@ class CustomLoginView(LoginView):
     """Custom view for user login, extending Django's built-in LoginView."""
 
     template_name = "accounts/login.html"
-    fields = "__all__"
+    authentication_form = CustomAuthenticationForm # NEW LINE: Use our custom form
     redirect_authenticated_user = (
         True  # Redirects authenticated users away from this view
     )
