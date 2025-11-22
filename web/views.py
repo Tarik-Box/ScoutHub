@@ -12,7 +12,7 @@ def home_view(request):
     players = Player.objects.filter(goals__gt=0).order_by("-goals")[:5]  # Get top 5 players by goals
 
     # Fetch recent public reports
-    public_reports = Report.objects.filter(is_public=True).order_by('-created_at')[:3] # Get 3 most recent public reports
+    public_reports = Report.objects.filter(is_public=True).order_by('-created_at') # Get all public reports
 
     # Create context dictionary
     context = {
