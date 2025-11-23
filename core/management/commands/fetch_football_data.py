@@ -259,9 +259,9 @@ class Command(BaseCommand):
 
                 if team_id_from_api:
                     team, created = Team.objects.update_or_create(
-                        api_id=team_id_from_api,
+                        name=team_name,  # Use name as the unique lookup
                         defaults={
-                            "name": team_name,
+                            "api_id": team_id_from_api,  # Update the api_id
                             "short_name": (
                                 team_short_name if team_short_name else team_name[:10]
                             ),
