@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 import dj_database_url
@@ -22,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure--l_67dfrc+$kph5#a*=*52k))7v&%4@r9+3r2+x#i&3(wey=ec"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
 
 
 # Application definition
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "core",
     "web",
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -61,7 +64,7 @@ ROOT_URLCONF = "scout_hub.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "scout_hub/templates"],  # MODIFIED
+        "DIRS": [BASE_DIR / "scout_hub/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -80,9 +83,10 @@ WSGI_APPLICATION = "scout_hub.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.config(  # MODIFIED
-        default=config("DATABASE_URL"),  # MODIFIED: reads from DATABASE_URL in .env
-        conn_max_age=600,  # NEW: Optional, but good for persistent connections
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=config('DB_SSL_REQUIRE', default=True, cast=bool)
     )
 }
 
@@ -122,26 +126,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "home"  # Already added
+LOGIN_REDIRECT_URL = "home"
 
-LOGIN_URL = "accounts:login"  # NEW LINE: Specify the URL for the login page
+LOGIN_URL = "accounts:login"
 
 
 # Email Configuration for Contact Form
-# For development, use the console backend to print emails to the console.
-# In production, configure with a proper SMTP backend.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'webmaster@scouthub.com'
 SERVER_EMAIL = 'server@scouthub.com'
 
-# Define who gets the contact form messages
 ADMINS = [
     ('ScoutHub Admin', 'admin@scouthub.com'),
 ]
-MANAGERS = ADMINS # Managers get error notifications if configured
+MANAGERS = ADMINS
