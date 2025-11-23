@@ -53,6 +53,9 @@
                         <ul class="navbar-nav">
                             {% if user.is_authenticated %}
                                 <li class="nav-item">
+                                    <a class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %} custom-nav-link" href="{% url 'accounts:profile' %}">Profile</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link {% if request.resolver_match.url_name == 'user_dashboard' %}active{% endif %} custom-nav-link" href="{% url 'dashboard:user_dashboard' %}">Dashboard</a>
                                 </li>
                                 <li class="nav-item">

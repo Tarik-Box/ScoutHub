@@ -13,4 +13,5 @@ urlpatterns = [
         auth_views.LogoutView.as_view(next_page=reverse_lazy("home")),
         name="logout",
     ),
+    path("profile/", views.profile_view, name="profile"),
 ]
