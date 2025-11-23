@@ -31,7 +31,7 @@ class Command(BaseCommand):
             help="Year of the season to fetch data for (default: current season).",
         )
         parser.add_argument(
-            "--force_update",
+            "--force",
             action="store_true",
             help="Force API call even if within rate limit period.",
         )
@@ -39,7 +39,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         league_id = options["league_id"]
         season_year = options["season_year"]
-        force_update = options["force_update"]
+        force = options["force"]
 
         self.stdout.write(
             self.style.SUCCESS(
@@ -61,7 +61,7 @@ class Command(BaseCommand):
             league_id=league_id,
             season_year=season_year,
             rate_limit_period=RATE_LIMIT_PERIOD,
-            force_update=force_update,
+            force=force,
             success_msg="Standings updated successfully.",
             error_msg="Failed to fetch or process standings data.",
         )
@@ -77,7 +77,7 @@ class Command(BaseCommand):
             league_id=league_id,
             season_year=season_year,
             rate_limit_period=RATE_LIMIT_PERIOD,
-            force_update=force_update,
+            force=force,
             success_msg="Top scorers updated successfully.",
             error_msg="Failed to fetch or process top scorers data.",
         )
@@ -97,7 +97,7 @@ class Command(BaseCommand):
 
         time_since_last_call = timezone.now() - last_call_obj.last_call_timestamp
 
-        if force_update or time_since_last_call > RATE_LIMIT_PERIOD:
+        if force or time_since_last_call > RATE_LIMIT_PERIOD:
             self.stdout.write(
                 self.style.WARNING(f"Fetching new player rosters from API...")
             )
@@ -170,7 +170,7 @@ class Command(BaseCommand):
         league_id,
         season_year,
         rate_limit_period,
-        force_update,
+        force,
         success_msg,
         error_msg,
     ):
@@ -186,7 +186,7 @@ class Command(BaseCommand):
 
         time_since_last_call = timezone.now() - last_call_obj.last_call_timestamp
 
-        if force_update or time_since_last_call > rate_limit_period:
+        if force or time_since_last_call > rate_limit_period:
             self.stdout.write(
                 self.style.WARNING(f"Fetching new {endpoint_type} data from API...")
             )
