@@ -25,8 +25,9 @@ class Profile(models.Model):
 
 # Signal to create/update user profile
 @receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
+def create_or_update_user_profile(sender, instance, **kwargs):
+    """
+    Ensures a profile object is created for every user.
+    """
+    Profile.objects.get_or_create(user=instance)
 
