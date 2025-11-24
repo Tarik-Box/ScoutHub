@@ -1,5 +1,7 @@
 # ScoutHub
 
+**Live Project Link:** [https://scouthubs-186a0b7f55b2.herokuapp.com/](https://scouthubs-186a0b7f55b2.herokuapp.com/)
+
 ScoutHub is a Django-based web application designed for football enthusiasts and scouts to track top league teams and players, as well as create and manage their personal scouting reports. The application integrates with an external Football API to provide up-to-date data.
 
 
@@ -29,7 +31,7 @@ ScoutHub is a Django-based web application designed for football enthusiasts and
 
 ---
 
-## 💡 Rationale and Purpose
+## Rationale and Purpose
 
 The primary goal of ScoutHub is to empower football enthusiasts, scouts, and analysts with a centralized platform to manage and analyze critical player and team data. It addresses the need for an intuitive tool to:
 
@@ -76,8 +78,8 @@ Here's where it all began, sketching out the core ideas and structure before a s
 -   **Wireframe**: Basic visual layouts to understand user interface and interaction.
 
 
-<div style="text-align: center;">
-    <img src="assets/images/paper-work.jpg" alt="Paper Work" width="50%" heigh="50%" />
+<div align="center">
+    <img src="assets/images/paper-work.jpg" alt="Paper Work" width="80%" heigh="60%" />
 </div>
 
 ---
@@ -88,14 +90,16 @@ Translating initial sketches into more refined digital designs.
 
 -   **Home Page Design**:
 
-<div style="text-align: center;">
-    <img src="assets/images/Scouthub-figma.png" alt="Figma Home Page Design Placeholder" width="50%" heigh="50%" />
+<div align="center">
+    <img src="assets/images/Scouthub-figma.png" alt="Figma Home Page Design Placeholder" width="80%" heigh="60%" />
 </div>
+
+---
 
 -   **Dashboard Design**:
 
-<div style="text-align: center;">
-    <img src="assets/images/ScouthubDash.png" alt="Figma Home Page Design Placeholder" width="50%" heigh="50%" />
+<div align="center">
+    <img src="assets/images/ScouthubDash.png" alt="Figma Home Page Design Placeholder" width="80%" heigh="60%" />
 </div>
 
 ---
@@ -116,26 +120,34 @@ Our development process followed an Agile approach, managing tasks and user stor
 
     *User Stories - Examples:*
 
-<div style="text-align: center;">
-    <img src="assets/images/Agile-1.png" alt="User Story" width="50%" heigh="50%" />
+<div align="center">
+    <img src="assets/images/Agile-1.png" alt="User Story" width="80%" heigh="60%" />
 </div>
 
-<div style="text-align: center;">
-    <img src="assets/images/Agile-2.png" alt="User Story" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/Agile-2.png" alt="User Story" width="80%" heigh="60%" />
 </div>
 
-<div style="text-align: center;">
-    <img src="assets/images/Agile-3.png" alt="User Story" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/Agile-3.png" alt="User Story" width="80%" heigh="60%" />
 </div>
 
-    I've decided to go start with US-#4 and #5 to setup the envioroment,API so we load data into the Home-Page first.
+---
 
-<div style="text-align: center;">
-    <img src="assets/images/Agile-4.png" alt="User Story" width="50%" heigh="50%" />
+    I've decided to start with US-#4 and #5 to setup the envioroment,API so we load data into the Home-Page first.
+
+<div align="center">
+    <img src="assets/images/Agile-4.png" alt="User Story" width="80%" heigh="60%" />
 </div>
 
-<div style="text-align: center;">
-    <img src="assets/images/Agile-US4.png" alt="User Story" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/Agile-US4.png" alt="User Story" width="80%" heigh="60%" />
 </div>
 
 ---
@@ -181,22 +193,34 @@ This process successfully switched the project to use PostgreSQL as the backend 
 #### Player Image Not Displayed (Resolved)
 The player images were not displaying on the homepage due to a typo in the `web/templates/web/home.html` template. The template was incorrectly trying to access `player.image.url` assuming `image` was an ImageField, whereas the `Player` model uses a `URLField` named `image_url`.
 
-<div style="text-align: center;">
-    <img src="assets/images/player-images-bug.png" alt="Player Image Not Displayed" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/player-images-bug.png" alt="Player Image Not Displayed" width="80%" heigh="60%" />
 </div>
+
+---
 
 **Resolution:** The template reference was corrected from `player.image.url` to `player.image_url`.
 
-<div style="text-align: center;">
-    <img src="assets/images/player-images-loaded.png" alt="Player Image Displayed" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/player-images-loaded.png" alt="Player Image Displayed" width="80%" heigh="60%" />
 </div>
+
+---
 
 #### NoReverseMatch for 'login' URL (Resolved)
 When attempting to access the registration page (`/accounts/register/`), a `NoReverseMatch` exception was raised, indicating that the URL pattern named 'login' could not be found. This occurred because the registration template (`register.html`) contained a link to `{% url 'login' %}`, but the `login` URL pattern was defined within the `accounts` app namespace.
 
-<div style="text-align: center;">
-    <img src="assets/images/noreversematch_login.png" alt="NoReverseMatch Login" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/noreversematch_login.png" alt="NoReverseMatch Login" width="80%" heigh="60%" />
 </div>
+
+---
 
 **Resolution:** The template reference in `accounts/templates/accounts/register.html` was corrected from `{% url 'login' %}` to `{% url 'accounts:login' %}` to use the namespaced URL.
 
@@ -204,9 +228,13 @@ When attempting to access the registration page (`/accounts/register/`), a `NoRe
 #### Dependent Player Dropdown Not Populating (Resolved)
 The "Create Report" form includes a "Team" dropdown and a "Player" dropdown that should be dynamically populated via JavaScript. When a team was selected, the player dropdown remained empty.
 
-<div style="text-align: center;">
-    <img src="assets/images/player-list-empty.png" alt="Empty Players List And Debuging" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/player-list-empty.png" alt="Empty Players List And Debuging" width="80%" heigh="60%" />
 </div>
+
+---
 
 **Resolution:** The bug was traced through a multi-step debugging process.
 1.  **Initial Hypothesis:** The first assumption was that the JSON data being passed from the Django view to the template was being improperly escaped. This was addressed by applying the `|safe` filter in the template, but the bug persisted.
@@ -218,11 +246,13 @@ The "Create Report" form includes a "Team" dropdown and a "Player" dropdown that
     *   The JavaScript selector was updated to the more specific `document.querySelector('#create-report-form')` to guarantee it selected the correct form.
 This change resolved the issue, and the dropdowns now function as expected.
 
-<div style="text-align: center;">
-    <img src="assets/images/players-list.png" alt="Dependent Player Dropdown" width="50%" heigh="50%" />
+---
+
+<div align="center">
+    <img src="assets/images/players-list.png" alt="Dependent Player Dropdown" width="80%" heigh="60%" />
 </div>
 
-
+---
 
 #### Incomplete Form Submission Allowed (Resolved)
 The "Create Report" form allowed submission even when required fields like 'player' or 'title' were left empty. While server-side validation would catch this, it provided a poor user experience.
@@ -246,34 +276,41 @@ The first glimpses of the working application.
 
 *First Creation:*
 
-<div style="text-align: center;">
-    <img src="assets/images/first-creation.png" alt="Working Creation" width="50%" heigh="50%" />
-</div>
 
-
-*First Updating:*
-
-<div style="text-align: center;">
-    <img src="assets/images/first-updating.png" alt="Working Updating" width="50%" heigh="50%" />
-</div>
-
-*Deletion & Confirmation:*
-
-
-<div style="text-align: center;">
-    <img src="assets/images/deletion-confirm.png" alt="Working deletion" width="50%" heigh="50%" />
-</div>
-
-*Vivibility Also Works:*
-
-
-<div style="text-align: center;">
-    <img src="assets/images/visibility.png" alt="Working visibilty" width="50%" heigh="50%" />
+<div align="center">
+    <img src="assets/images/first-creation.png" alt="Working Creation" width="80%" heigh="60%" />
 </div>
 
 ---
 
-## 🧠 User Experience (UX) & Accessibility
+
+*First Updating:*
+
+<div align="center">
+    <img src="assets/images/first-updating.png" alt="Working Updating" width="80%" heigh="60%" />
+</div>
+
+---
+
+*Deletion & Confirmation:*
+
+
+<div align="center">
+    <img src="assets/images/deletion-confirm.png" alt="Working deletion" width="80%" heigh="60%" />
+</div>
+
+---
+
+*Vivibility Also Works:*
+
+
+<div align="center">
+    <img src="assets/images/visibility.png" alt="Working visibilty" width="80%" heigh="60%" />
+</div>
+
+---
+
+## User Experience (UX) & Accessibility
 
 ScoutHub is designed with a focus on delivering a smooth and intuitive user experience (UX) for all users, alongside robust accessibility (A11y) to ensure broad usability.
 
@@ -312,21 +349,27 @@ ScoutHub is designed to be fully responsive, providing an optimal viewing and in
 ### Screenshots
 *(Placeholder for screenshots demonstrating responsiveness across different devices.)*
 
-<div style="text-align: center;">
-    <img src="assets/images/placeholder_responsive_desktop.png" alt="Responsive Screenshot Desktop" width="50%" heigh="50%" />
-</div>
+---
 
-<div style="text-align: center;">
-    <img src="assets/images/placeholder_responsive_tablet.png" alt="Responsive Screenshot Tablet" width="50%" heigh="50%" />
-</div>
-
-<div style="text-align: center;">
-    <img src="assets/images/placeholder_responsive_mobile.png" alt="Responsive Screenshot Mobile" width="50%" heigh="50%" />
+<div align="center">
+    <img src="assets/images/placeholder_responsive_desktop.png" alt="Responsive Screenshot Desktop" width="80%" heigh="60%" />
 </div>
 
 ---
 
-## 🛠️ Technologies Used
+<div align="center">
+    <img src="assets/images/placeholder_responsive_tablet.png" alt="Responsive Screenshot Tablet" width="80%" heigh="60%" />
+</div>
+
+---
+
+<div align="center">
+    <img src="assets/images/placeholder_responsive_mobile.png" alt="Responsive Screenshot Mobile" width="80%" heigh="60%" />
+</div>
+
+---
+
+## Technologies Used
 
 This project utilizes the following key technologies to deliver its features:
 
@@ -350,8 +393,8 @@ you can get a free API_KEY [here](https://www.api-football.com/)
 
 
 ---
-
-## 📂 File Structure
+📂
+## File Structure
 
 A high-level overview of the ScoutHub project's directory structure.
 
@@ -371,8 +414,8 @@ ScoutHub/
 ```
 
 ---
-
-## 🧰 Code Structure and Logic
+🧰 
+## Code Structure and Logic
 
 This section provides insights into the overall architecture, key design patterns, and how different components of the ScoutHub application interact to deliver its functionality.
 
@@ -398,7 +441,8 @@ The application's primary data flow involves:
 
 ---
 
-## 🌱 Future Improvements
+🌱 
+## Future Improvements
 
 Ideas and potential enhancements for future iterations of the ScoutHub project, aimed at expanding functionality and improving user experience. This is just a sample of what could be improved, and much more could be enhanced to create a truly unique football analyzing web-based system:
 
@@ -411,8 +455,8 @@ Ideas and potential enhancements for future iterations of the ScoutHub project, 
 -   **Integration with Live Data Feeds**: Explore direct integration with live match data for real-time scouting updates.
 
 ---
-
-## 🚀 Deployment
+🚀
+## Deployment
 
 Deploying ScoutHub to a production environment involves several key steps to ensure it runs efficiently and is accessible to users. This guide outlines the process for deployment using Heroku, a popular Platform-as-a-Service (PaaS). The detailed steps here are general and will be updated with more specific instructions as the project progresses past initial deployment.
 
@@ -480,15 +524,44 @@ Deploying ScoutHub to a production environment involves several key steps to ens
 
 9.  **Fetch Initial Data**:
     Populate your production database with initial football data:
+
     ```bash
-    heroku run python manage.py fetch_football_data --season_year=2023 --force_update -app your-app-name
+    heroku run python manage.py fetch_football_data --force -app your-app-name
     ```
 
-Your ScoutHub application should now be live and accessible at `https://your-app-name.herokuapp.com`!
+Your ScoutHub application should now be live and accessible at [https://scouthubs-186a0b7f55b2.herokuapp.com/](https://scouthubs-186a0b7f55b2.herokuapp.com/)!
+
+### Deployment Screenshots
 
 ---
 
-## 🤝 Contributing
+<div align="center">
+    <img src="assets/images/heruko-push.png" alt="Deployment Step 1" width="80%" heigh="60%" />
+</div>
+
+---
+
+<div align="center">
+    <img src="assets/images/heruko-migrate.png" alt="Deployment Step 2" width="80%" heigh="60%" />
+</div>
+
+---
+
+
+<div align="center">
+    <img src="assets/images/fetching-data.png" alt="Deployment Step 3" width="80%" heigh="60%" />
+</div>
+
+---
+
+<div align="center">
+    <img src="assets/images/firs-deployed-version.png" alt="Live Application Screenshot" width="80%" heigh="60%" />
+</div>
+
+---
+
+🤝 
+## Contributing
 
 We welcome contributions to ScoutHub! If you're interested in improving the project, please follow these guidelines:
 
@@ -511,8 +584,8 @@ Found an issue? Please open a new issue on the GitHub repository and include:
 -   Any relevant screenshots or details about your setup.
 
 ---
-
-## 📝 Credits
+📝 
+## Credits
 
 This project was developed by **Tarik Box**.
 
@@ -536,6 +609,9 @@ This project leverages several third-party libraries and APIs to function effect
 -   [Corey Chafer django playlist](https://www.youtube.com/watch?v=UmljXZIypDc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p)
 -   [7 Uhr's Django by Dennis Ivy on Traversy Media
 ](https://www.youtube.com/watch?v=PtQiiknWUcI&t=16163s)
+-   [Django Docs](https://docs.djangoproject.com/en/5.2/)
+-   [Stackoverflow](stackoverflow.com)
+
 
 ---
 

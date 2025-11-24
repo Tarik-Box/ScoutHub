@@ -109,7 +109,7 @@ body {
     padding: 10px 20px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
-    background-color: rgba(42, 42, 62, 0.8); /* #2a2a3e with opacity */
+    background-color: #1a1a2e; /* #2a2a3e with opacity */
     overflow: hidden;
     position: relative; /* For the .hover child */
     margin: 1.5rem auto; /* Center horizontally, preserve sticky footer */
@@ -169,8 +169,21 @@ body {
     min-height: 100vh;
 }
 
+.top-five{
+    padding: 10px;
+}
 main {
     flex-grow: 1;
+}
+
+.registration-form{
+    background-color: #1a1a2e;
+    color: white;
+    padding: 32px;
+    margin-top: 1rem;
+    border: 0.3px solid #c084fc;
+    border-radius: 15px;
+    
 }
 
 /* Go to Top Button Styling */
@@ -180,19 +193,20 @@ main {
     bottom: 20px; /* Place the button at the bottom of the page */
     right: 20px; /* Place the button 20px from the right */
     z-index: 99; /* Make sure it does not overlap other things */
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Add a subtle border */
     outline: none; /* Remove outline */
     background-color: transparent; /* Make background transparent */
-    color: white; /* Text color */
+    color: #1a1a2e; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
-    border-radius: 50%; /* Rounded corners */
     font-size: 16px; /* Increase font size */
-    /* box-shadow removed for default state */
     transition: background-color 0.3s, transform 0.3s, border-color 0.3s; /* Smooth transition */
 }
 
 .go-to-top-btn:hover {
-    background-color: #8E2DE2; /* Darker background on hover */
     transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.container-div-shared {
+    background-color: #1a1a2e;
+    padding: 16px;
 }
