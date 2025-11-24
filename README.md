@@ -346,25 +346,12 @@ ScoutHub is designed to be fully responsive, providing an optimal viewing and in
 ### Strategy
 *(To be detailed later: Explain the media query strategy "Mobile First", flexible layouts, and image handling.)*
 
-### Screenshots
-*(Placeholder for screenshots demonstrating responsiveness across different devices.)*
+### Screenshot
 
 ---
 
 <div align="center">
-    <img src="assets/images/placeholder_responsive_desktop.png" alt="Responsive Screenshot Desktop" width="80%" heigh="60%" />
-</div>
-
----
-
-<div align="center">
-    <img src="assets/images/placeholder_responsive_tablet.png" alt="Responsive Screenshot Tablet" width="80%" heigh="60%" />
-</div>
-
----
-
-<div align="center">
-    <img src="assets/images/placeholder_responsive_mobile.png" alt="Responsive Screenshot Mobile" width="80%" heigh="60%" />
+    <img src="assets/images/resonsive.gif" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
 </div>
 
 ---
