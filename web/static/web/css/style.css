@@ -29,6 +29,9 @@ body {
 }
 
 .navbar-brand img {
+    max-width: 100%; /* Make image responsive */
+    height: 50px; /* Set a fixed height to control its size */
+    width: auto; /* Allow width to adjust to maintain aspect ratio */
     /* Adjust logo vertical alignment within the navbar if necessary */
     vertical-align: middle;
     border-radius: 30%; /* Round the logo image */
@@ -162,6 +165,35 @@ body {
     transform: translateX(0);
 }
 
+/* Media Query for very small screens (e.g., mobile portrait) */
+@media (max-width: 576px) {
+    .dock ul {
+        flex-wrap: wrap; /* Allow icons to wrap to next line */
+        justify-content: center; /* Center icons when wrapped */
+    }
+
+    .dock ul li {
+        margin: 5px; /* Adjust margins for wrapped items */
+    }
+
+    .dock .icon {
+        width: 40px; /* Reduce icon size */
+        height: 40px;
+        font-size: 20px; /* Adjust font size for smaller icon */
+    }
+
+    /* Further reduce padding for registration form on very small screens if needed */
+    .registration-form {
+        padding: 15px;
+    }
+
+    /* Adjust navbar text for very small screens */
+    #navbar-center-text {
+        font-size: 0.8em; /* Smaller font size for navbar descriptive text */
+        display: none; /* Ensure it's hidden on very small screens if it somehow appears */
+    }
+}
+
 /* Sticky Footer Styles */
 #page-container {
     display: flex;
@@ -184,6 +216,12 @@ main {
     border: 0.3px solid #c084fc;
     border-radius: 15px;
     
+}
+
+@media (max-width: 768px) {
+    .registration-form {
+        padding: 20px; /* Smaller padding on small screens */
+    }
 }
 
 /* Go to Top Button Styling */
@@ -209,4 +247,23 @@ main {
 .container-div-shared {
     background-color: #1a1a2e;
     padding: 16px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.report-card-animated {
+    opacity: 0; /* Initially hidden */
+    animation-name: fadeInUp;
+    animation-duration: 0.8s;
+    animation-fill-mode: forwards; /* Keeps the final state of the animation */
+    animation-timing-function: ease-out;
 }

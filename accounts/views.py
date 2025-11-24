@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserChangeForm as _UserChangeForm # Temporarily keep for the old_string, but we will remove it
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, ProfileForm, UserUpdateForm
+from .forms import CustomUserCreationForm, ProfileForm, UserUpdateForm, CustomLoginForm
 
 
 
@@ -27,7 +27,7 @@ class CustomLoginView(LoginView):
     """Custom view for user login, extending Django's built-in LoginView."""
 
     template_name = "accounts/login.html"
-    fields = "__all__" # Reinstated
+    form_class = CustomLoginForm # Use our custom login form
     redirect_authenticated_user = (
         True  # Redirects authenticated users away from this view
     )

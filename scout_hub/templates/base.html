@@ -27,7 +27,7 @@
                 <span class="hover"></span>
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{% url 'home' %}">
-                        <img src="{% static 'web/images/logo.png' %}" alt="ScoutHub Logo" width="80" height="80" class="d-inline-block align-text-top me-2">
+                        <img src="{% static 'web/images/logo.png' %}" alt="ScoutHub Logo" class="d-inline-block align-text-top me-2">
                         
                     </a>
                     <div id="navbar-center-text" class="d-none d-lg-block text-white-50 text-center">
@@ -62,7 +62,7 @@
                                     <!-- Logout form disguised as a button to ensure POST request -->
                                     <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-link nav-link custom-nav-link">Logout</button>
+                                        <button type="submit" class="btn btn-link nav-link custom-nav-link" aria-label="Logout">Logout</button>
                                     </form>
                                 </li>
                             {% else %}
@@ -100,14 +100,14 @@
             <!-- Dock Footer section -->
             <footer class="dock">
                 <ul>
-                    <li><a href="https://github.com/Tarik-Box/" target="_blank"><i class="icon fa-brands fa-github"></i></a></li>
-                    <li><a href="https://www.linkedin.com/in/tarik-ataia-a0763a383/" target="_blank"><i class="icon fa-brands fa-linkedin"></i></a></li>
-                    <li><a href="https://x.com/AtaiaTarik" target="_blank"><i class="icon fa-brands fa-x-twitter"></i></a></li>
-                    <li><a href="https://www.facebook.com/profile.php?id=61580464472525" target="_blank"><i class="icon fa-brands fa-facebook-f"></i></a></li>
-                    <li><a href="https://ballalyze.com" target="_blank"><i class="icon fa-solid fa-globe"></i></a></li>
-                    <li><a href="https://codeinstitute.net/" target="_blank"><i class="icon fa-solid fa-link"></i></a></li>
-                    <li><a href="{% url 'contact' %}"><i class="icon fa-solid fa-envelope"></i></a></li> {# Contact Page Link #}
-                    <li><a href="{% url 'about' %}"><i class="icon fa-solid fa-info-circle"></i></a></li> {# About Page Link #}
+                    <li><a href="https://github.com/Tarik-Box/" target="_blank" aria-label="GitHub Profile"><i class="icon fa-brands fa-github"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/tarik-ataia-a0763a383/" target="_blank" aria-label="LinkedIn Profile"><i class="icon fa-brands fa-linkedin"></i></a></li>
+                    <li><a href="https://x.com/AtaiaTarik" target="_blank" aria-label="X (formerly Twitter) Profile"><i class="icon fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="https://www.facebook.com/profile.php?id=61580464472525" target="_blank" aria-label="Facebook Profile"><i class="icon fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href="https://ballalyze.com" target="_blank" aria-label="Ballalyze Website"><i class="icon fa-solid fa-globe"></i></a></li>
+                    <li><a href="https://codeinstitute.net/" target="_blank" aria-label="Code Institute Website"><i class="icon fa-solid fa-link"></i></a></li>
+                    <li><a href="{% url 'contact' %}" aria-label="Contact Us"><i class="icon fa-solid fa-envelope"></i></a></li> {# Contact Page Link #}
+                    <li><a href="{% url 'about' %}" aria-label="About Us"><i class="icon fa-solid fa-info-circle"></i></a></li> {# About Page Link #}
                     <!-- Add more icons as needed -->
                 </ul>
                 <p class="text-center text-white-50 mt-2 mb-0">&copy; {% now "Y" %} ScoutHub</p>
@@ -115,7 +115,7 @@
             </footer>    </div>
 
     <!-- Go to Top Button -->
-    <a href="#" id="goToTopBtn" class="go-to-top-btn" title="Go to top"><i class="fa-solid fa-arrow-up"></i></a>
+    <a href="#" id="goToTopBtn" class="go-to-top-btn" title="Go to top" aria-label="Scroll to top of page"><i class="fa-solid fa-arrow-up"></i></a>
 
     {# Placeholder for additional JavaScript at the end of the body from child templates #}
     {% block extra_body %}{% endblock %}

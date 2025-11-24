@@ -21,4 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Staggered animation for report cards
+    const animatedCards = document.querySelectorAll('.report-card-animated');
+    if (animatedCards.length > 0) {
+        animatedCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.15}s`;
+        });
+    }
 });
