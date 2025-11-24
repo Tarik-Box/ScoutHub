@@ -30,7 +30,7 @@ body {
 
 .navbar-brand img {
     max-width: 100%; /* Make image responsive */
-    height: 50px; /* Set a fixed height to control its size */
+    height: 80px; /* Set a fixed height to control its size */
     width: auto; /* Allow width to adjust to maintain aspect ratio */
     /* Adjust logo vertical alignment within the navbar if necessary */
     vertical-align: middle;
