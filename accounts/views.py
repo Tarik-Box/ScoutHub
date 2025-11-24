@@ -35,6 +35,15 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy("home")  # Redirect to 'home' on successful login
 
+    def form_invalid(self, form):
+        """
+        Renders the invalid login form and adds an error message to the context.
+        """
+        if self.extra_context is None:
+            self.extra_context = {}
+        self.extra_context['login_error'] = "Please enter a correct username and password. Note that both fields may be case-sensitive."
+        return super().form_invalid(form)
+
 
 @login_required
 def profile_view(request):
