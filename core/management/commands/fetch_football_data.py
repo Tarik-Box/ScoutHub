@@ -24,11 +24,6 @@ class Command(BaseCommand):
         parser.add_argument(
             "--season_year",
             type=int,
-            # default=timezone.now().year
-            # - (
-            #     1 if timezone.now().month < 8 else 0
-            # ),  # Default to current or previous season
-            # help="Year of the season to fetch data for (default: current season).",
             default=2023,  # Default to 2023 season due to free API key limitations                                                                                                           │
             help="Year of the season to fetch data for (default: 2023).",  
         )
