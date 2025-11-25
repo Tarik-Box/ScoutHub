@@ -426,7 +426,9 @@ All code is periodically reviewed against these standards to maintain high quali
 
 **Flake8**
 
-Below is a screenshot of the `flake8` output showing no errors, indicating that the Python code is linted.
+Most, if not all, the flake8 warnings have been resolved. 
+Below is a screenshot of the flake8 output, indicating that the Python code is linted.
+Remaining warnings are primarily for the unavoidable line length
 
 <div align="center">
     <img src="assets/images/flake8-screenshot.png" alt="Paper Work"/>
