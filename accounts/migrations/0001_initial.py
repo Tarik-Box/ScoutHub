@@ -15,17 +15,43 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Profile',
+            name="Profile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bio', models.TextField(blank=True, max_length=500)),
-                ('profile_picture', models.ImageField(blank=True, null=True, upload_to='profile_pics/')),
-                ('preferred_position', models.CharField(blank=True, max_length=100)),
-                ('idol_player', models.CharField(blank=True, max_length=100, null=True)),
-                ('favorite_talent', models.CharField(blank=True, max_length=100, null=True)),
-                ('best_coach', models.CharField(blank=True, max_length=100, null=True)),
-                ('favorite_club', models.CharField(blank=True, max_length=100, null=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("bio", models.TextField(blank=True, max_length=500)),
+                (
+                    "profile_picture",
+                    models.ImageField(blank=True, null=True, upload_to="profile_pics/"),
+                ),
+                ("preferred_position", models.CharField(blank=True, max_length=100)),
+                (
+                    "idol_player",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "favorite_talent",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("best_coach", models.CharField(blank=True, max_length=100, null=True)),
+                (
+                    "favorite_club",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

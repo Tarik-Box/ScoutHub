@@ -28,7 +28,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1,localhost").split(",")
 
 
 # Application definition
@@ -86,7 +86,7 @@ DATABASES = {
     "default": dj_database_url.config(
         default=config("DATABASE_URL"),
         conn_max_age=600,
-        ssl_require=config('DB_SSL_REQUIRE', default=True, cast=bool)
+        ssl_require=config("DB_SSL_REQUIRE", default=True, cast=bool),
     )
 }
 
@@ -141,11 +141,11 @@ LOGIN_URL = "accounts:login"
 
 
 # Email Configuration for Contact Form
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'webmaster@scouthub.com'
-SERVER_EMAIL = 'server@scouthub.com'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "webmaster@scouthub.com"
+SERVER_EMAIL = "server@scouthub.com"
 
 ADMINS = [
-    ('ScoutHub Admin', 'admin@scouthub.com'),
+    ("ScoutHub Admin", "admin@scouthub.com"),
 ]
 MANAGERS = ADMINS

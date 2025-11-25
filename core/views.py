@@ -1,3 +1,3 @@
-from django.shortcuts import render
+"""Views for the core application."""
 
 # Create your views here.

@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_team_api_id'),
+        ("core", "0002_team_api_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='team',
-            name='form',
+            model_name="team",
+            name="form",
             field=models.CharField(blank=True, max_length=5, null=True),
         ),
         migrations.AddField(
-            model_name='team',
-            name='points',
+            model_name="team",
+            name="points",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='team',
-            name='position',
+            model_name="team",
+            name="position",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]

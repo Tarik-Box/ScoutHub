@@ -1,3 +1,4 @@
+"""Core models for the ScoutHub application."""
 from django.db import models
 from django.contrib.auth.models import User  # Import User model
 
@@ -11,13 +12,18 @@ class Team(models.Model):
     crest_url = models.URLField(max_length=500, blank=True, null=True)
     founded = models.IntegerField(blank=True, null=True)
     venue_name = models.CharField(max_length=255, blank=True, null=True)
-    position = models.IntegerField(null=True, blank=True)  # Team's position in league standings
-    points = models.IntegerField(null=True, blank=True)  # Team's points in league standings
+    position = models.IntegerField(
+        null=True, blank=True
+    )  # Team's position in league standings
+    points = models.IntegerField(
+        null=True, blank=True
+    )  # Team's points in league standings
     form = models.CharField(
         max_length=5, null=True, blank=True
     )  # Team's recent form (e.g., WWLDD)
 
     def __str__(self):
+        """Return a string representation of the team."""
         return self.name
 
 
@@ -34,12 +40,15 @@ class Player(models.Model):
     assists = models.IntegerField(default=0)
 
     class Meta:
+        """Metaclass for the Player model."""
+
         unique_together = (
             "name",
             "team",
         )  # A player name should be unique within a team
 
     def __str__(self):
+        """Return a string representation of the player."""
         return f"{self.name} ({self.team.short_name})"
 
 
@@ -56,13 +65,15 @@ class Report(models.Model):
     is_public = models.BooleanField(default=False)
 
     def __str__(self):
+        """Return a string representation of the report."""
         return f"Report by {self.user.username}: {self.title}"
 
 
 class LastAPICall(models.Model):  # NEW MODEL
     """
-    Records the last time a specific API endpoint was called for a given resource
-    to help manage API rate limits.
+    Records the last time a specific API endpoint was called.
+
+    This is to help manage API rate limits.
     """
 
     endpoint_type = models.CharField(
@@ -73,6 +84,8 @@ class LastAPICall(models.Model):  # NEW MODEL
     last_call_timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
+        """Metaclass for the LastAPICall model."""
+
         unique_together = (
             "endpoint_type",
             "league_id",
@@ -82,4 +95,8 @@ class LastAPICall(models.Model):  # NEW MODEL
         verbose_name_plural = "Last API Calls"
 
     def __str__(self):
-        return f"{self.endpoint_type} for League {self.league_id} in {self.season_year} last called at {self.last_call_timestamp}"
+        """Return a string representation of the LastAPICall record."""
+        return (
+            f"{self.endpoint_type} for League {self.league_id} in "
+            f"{self.season_year} last called at {self.last_call_timestamp}"
+        )

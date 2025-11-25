@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_team_form_team_points_team_position'),
+        ("core", "0003_team_form_team_points_team_position"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='player',
-            name='assists',
+            model_name="player",
+            name="assists",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='player',
-            name='goals',
+            model_name="player",
+            name="goals",
             field=models.IntegerField(default=0),
         ),
     ]

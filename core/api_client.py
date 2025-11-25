@@ -1,6 +1,6 @@
+"""Client for interacting with the API-Football."""
 import os
 import requests
-from django.conf import settings
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -20,18 +20,17 @@ class FootballAPIClient:
         Initializes the API client with credentials from environment variables.
         """
         self.api_key = os.getenv("API_KEY")
-        self.api_host = (
-            "v3.football.api-sports.io"  # As specified in API-Football v3 documentation
-        )
+        self.api_host = "v3.football.api-sports.io"
 
         if not self.api_key:
             raise ValueError(
-                "API_KEY not found in environment variables. Please set it in your .env file."
+                "API_KEY not found in environment variables. "
+                "Please set it in your .env file."
             )
 
         self.headers = {
-            "x-rapidapi-key": self.api_key,  # API key required for authentication, obtained from API-Football dashboard
-            "x-rapidapi-host": self.api_host,  # Host header as specified in API-Football v3 documentation
+            "x-rapidapi-key": self.api_key,
+            "x-rapidapi-host": self.api_host,
         }
         self.base_url = f"https://{self.api_host}"
 
@@ -49,7 +48,7 @@ class FootballAPIClient:
         url = f"{self.base_url}{endpoint}"
         try:
             response = requests.get(url, headers=self.headers, params=params)
-            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+            response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
             print(f"API request to {url} failed: {e}")
@@ -60,8 +59,8 @@ class FootballAPIClient:
         Fetches league standings for a specific league and season.
 
         Args:
-            league_id (int): The ID of the league (e.g., 39 for English Premier League).
-            season_year (int): The year of the season (e.g., 2023).
+            league_id (int): The ID of the league.
+            season_year (int): The year of the season.
 
         Returns:
             dict: JSON data for league standings, or None.

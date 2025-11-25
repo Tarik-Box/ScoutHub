@@ -1,3 +1,4 @@
+"""Forms for creating and updating scouting reports."""
 from django import forms
 from core.models import Report, Team, Player
 
@@ -22,23 +23,28 @@ class ReportForm(forms.ModelForm):
     )
 
     def __init__(self, *args, **kwargs):
+        """Initialize the ReportForm."""
         super().__init__(*args, **kwargs)
-        
+
         # If an instance is provided (i.e., we are editing an existing report)
         if self.instance and self.instance.pk:
             # Set initial value for team (assuming only one team for simplicity as per current form design)
             initial_team = self.instance.teams.first()
             if initial_team:
-                self.fields['team'].initial = initial_team
+                self.fields["team"].initial = initial_team
                 # Dynamically set the queryset for the player field based on the initial team
-                self.fields['player'].queryset = Player.objects.filter(team=initial_team)
+                self.fields["player"].queryset = Player.objects.filter(
+                    team=initial_team
+                )
 
             # Set initial value for player (assuming only one player for simplicity)
             initial_player = self.instance.players.first()
             if initial_player:
-                self.fields['player'].initial = initial_player
+                self.fields["player"].initial = initial_player
 
     class Meta:
+        """Metaclass for the ReportForm."""
+
         model = Report
         # 'teams' and 'players' are the model's M2M fields, but we use singular
         # 'team' and 'player' in the form for the dynamic dropdowns.

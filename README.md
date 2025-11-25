@@ -92,14 +92,36 @@ The application was developed using a **Mobile-First** approach. This means styl
 
 ### Screenshot
 
+
+**DESKTOP**
+
 ---
 
 <div align="center">
-    <img src="assets/images/resonsive.gif" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/desktop.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
 </div>
 
 ---
 
+**TABLET**
+
+---
+
+<div align="center">
+    <img src="assets/images/tablet.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
+---
+
+**MOBILE**
+
+---
+
+<div align="center">
+    <img src="assets/images/mobile.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
+---
 ## 🛠️ Technologies Used
 
 This project utilizes the following key technologies to deliver its features:
@@ -230,12 +252,20 @@ Deploying ScoutHub to a production environment involves several key steps to ens
     git push heroku main
     ```
 
+<div align="center">
+    <img src="assets/images/heruko-deploy.png" alt="Paper Work" width="80%" heigh="60%" />
+</div>
+
 8.  **Run Post-Deployment Commands**:
     Execute database migrations and populate initial data on Heroku:
     ```bash
     heroku run python manage.py migrate -app your-app-name
     heroku run python manage.py fetch_football_data --force -app your-app-name
     ```
+
+<div align="center">
+    <img src="assets/images/fetching-data.png" alt="Paper Work" width="80%" heigh="60%" />
+</div>
 
 Your ScoutHub application should now be live and accessible at [https://scouthubs-186a0b7f55b2.herokuapp.com/](https://scouthubs-186a0b7f55b2.herokuapp.com/)!
 
@@ -256,7 +286,31 @@ To maintain a high standard of code quality and consistency, the following tools
 -   **Python**: The `Black` code formatter is used to enforce a strict, consistent style across the entire Python codebase.
 -   **HTML/CSS**: *(Placeholder: Validation results from tools like the W3C Markup Validation Service will be added here.)*
 
+
+**HTML**
+
+<div align="center">
+    <img src="assets/images/Screenshot-html-validation.png" alt="Paper Work" width="80%" heigh="60%" />
+</div>
+
 ---
+
+**CSS**
+
+<div align="center">
+    <img src="assets/images/Screenshot-css-validation.png" alt="Paper Work" width="80%" heigh="60%" />
+</div>
+
+---
+
+**Google Lighthouse**
+
+<div align="center">
+    <img src="assets/images/Screenshot-lighthouse.png" alt="Paper Work" width="80%" heigh="60%" />
+</div>
+
+---
+
 
 ## 🚀 Development Walkthrough
 
