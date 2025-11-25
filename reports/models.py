@@ -1,4 +1,5 @@
 """Models for scouting reports."""
+
 from django.db import models
 
 # Create your models here.

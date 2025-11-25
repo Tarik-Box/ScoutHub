@@ -1,4 +1,5 @@
 """URL patterns for the dashboard application."""
+
 from django.urls import path
 from . import views
 

@@ -1,4 +1,5 @@
 "Management command to fetch and update football data from the API."
+
 import datetime
 import time
 import traceback

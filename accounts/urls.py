@@ -1,4 +1,5 @@
 """URL patterns for the accounts app."""
+
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views  # Django's built-in logout

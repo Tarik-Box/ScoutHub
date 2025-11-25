@@ -1,4 +1,5 @@
 """URL patterns for the web application."""
+
 from django.urls import path
 from . import views
 

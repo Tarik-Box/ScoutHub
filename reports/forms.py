@@ -1,4 +1,5 @@
 """Forms for creating and updating scouting reports."""
+
 from django import forms
 from core.models import Report, Team, Player
 

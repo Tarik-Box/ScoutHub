@@ -1,4 +1,5 @@
 """Management command to create profiles for users that don't have one."""
+
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from accounts.models import Profile
@@ -24,4 +25,3 @@ class Command(BaseCommand):
                 f"Successfully created {count} profiles for existing users."
             )
         )
-

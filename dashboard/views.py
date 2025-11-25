@@ -1,4 +1,5 @@
 """Views for the user dashboard."""
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from core.models import Report

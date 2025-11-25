@@ -1,4 +1,5 @@
 """Client for interacting with the API-Football."""
+
 import os
 import requests
 from dotenv import load_dotenv

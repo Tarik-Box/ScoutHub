@@ -5,7 +5,7 @@
 ScoutHub is a Django-based web application designed for football enthusiasts and scouts to track top league teams and players, as well as create and manage their personal scouting reports. The application integrates with an external Football API to provide up-to-date data.
 
 <div align="center">
-    <img src="assets/images/Home-page.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/Home-page.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 ## 📑 Table of Contents
@@ -67,27 +67,27 @@ The application guides users through a clear and logical flow:
 -   **Register/Login** to unlock personalized features.
 
 <div align="center">
-    <img src="assets/images/register.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/register.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 <div align="center">
-    <img src="assets/images/login.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/login.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 -   **Manage Reports**: Create, Read, Update, Delete personal scouting reports.
 
 <div align="center">
-    <img src="assets/images/create-report.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/create-report.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 <div align="center">
-    <img src="assets/images/report-options.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/report-options.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 -   **Download Reports**: Generate PDF versions of scouting reports for offline use.
 
 <div align="center">
-    <img src="assets/images/downloaded-report.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/downloaded-report.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 Key UX principles applied include:
@@ -123,7 +123,7 @@ The application was developed using a **Mobile-First** approach. This means styl
 ---
 
 <div align="center">
-    <img src="assets/images/desktop.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/desktop.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 ---
@@ -133,7 +133,7 @@ The application was developed using a **Mobile-First** approach. This means styl
 ---
 
 <div align="center">
-    <img src="assets/images/tablet.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/tablet.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 ---
@@ -143,7 +143,7 @@ The application was developed using a **Mobile-First** approach. This means styl
 ---
 
 <div align="center">
-    <img src="assets/images/mobile.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/mobile.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 ---
@@ -278,7 +278,7 @@ Deploying ScoutHub to a production environment involves several key steps to ens
     ```
 
 <div align="center">
-    <img src="assets/images/heruko-deploy.png" alt="Paper Work" width="80%" heigh="60%" />
+    <img src="assets/images/heruko-deploy.png" alt="Paper Work"   />
 </div>
 
 8.  **Run Post-Deployment Commands**:
@@ -289,7 +289,7 @@ Deploying ScoutHub to a production environment involves several key steps to ens
     ```
 
 <div align="center">
-    <img src="assets/images/fetching-data.png" alt="Paper Work" width="80%" heigh="60%" />
+    <img src="assets/images/fetching-data.png" alt="Paper Work"   />
 </div>
 
 Your ScoutHub application should now be live and accessible 
@@ -377,13 +377,13 @@ OK
 Destroying test database for alias 'default'...
 ```
 <div align="center">
-    <img src="assets/images/test-ok.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/test-ok.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 *(Note: An `OperationalError` during database destruction is a known, benign issue with PostgreSQL when other connections exist, but the test itself passes.)*
 
 <div align="center">
-    <img src="assets/images/database-exists.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+    <img src="assets/images/database-exists.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
 ### Code Style Validation
@@ -403,7 +403,7 @@ All code is periodically reviewed against these standards to maintain high quali
 **HTML**
 
 <div align="center">
-    <img src="assets/images/Screenshot-html-validation.png" alt="Paper Work" width="80%" heigh="60%" />
+    <img src="assets/images/Screenshot-html-validation.png" alt="Paper Work"   />
 </div>
 
 ---
@@ -411,7 +411,7 @@ All code is periodically reviewed against these standards to maintain high quali
 **CSS**
 
 <div align="center">
-    <img src="assets/images/Screenshot-css-validation.png" alt="Paper Work" width="80%" heigh="60%" />
+    <img src="assets/images/Screenshot-css-validation.png" alt="Paper Work"   />
 </div>
 
 ---
@@ -419,7 +419,28 @@ All code is periodically reviewed against these standards to maintain high quali
 **Google Lighthouse**
 
 <div align="center">
-    <img src="assets/images/Screenshot-lighthouse.png" alt="Paper Work" width="80%" heigh="60%" />
+    <img src="assets/images/Screenshot-lighthouse.png" alt="Paper Work"   />
+</div>
+
+---
+
+**Flake8**
+
+Below is a screenshot of the `flake8` output showing no errors, indicating that the Python code is linted.
+
+<div align="center">
+    <img src="assets/images/flake8-screenshot.png" alt="Paper Work"/>
+</div>
+
+---
+
+
+**Black**
+
+Below is a screenshot of the `Black` formatter output confirming that the Python code is consistently formatted and requires no further changes.
+
+<div align="center">
+    <img src="assets/images/black-formater.png" alt="Paper Work"   />
 </div>
 
 ---
@@ -437,7 +458,7 @@ Here's where it all began, sketching out the core ideas and structure before a s
 -   **Wireframe**: Basic visual layouts to understand user interface.
 
 <div align="center">
-    <img src="assets/images/paper-work.jpg" alt="Paper Work" width="80%" heigh="60%" />
+    <img src="assets/images/paper-work.jpg" alt="Paper Work"   />
 </div>
 
 ---
@@ -446,11 +467,11 @@ Here's where it all began, sketching out the core ideas and structure before a s
 Translating initial sketches into more refined digital designs.
 
 <div align="center">
-    <img src="assets/images/Scouthub-figma.png" alt="Figma Home Page Design" width="80%" heigh="60%" />
+    <img src="assets/images/Scouthub-figma.png" alt="Figma Home Page Design"   />
 </div>
 
 <div align="center">
-    <img src="assets/images/ScouthubDash.png" alt="Figma Dashboard Design" width="80%" heigh="60%" />
+    <img src="assets/images/ScouthubDash.png" alt="Figma Dashboard Design"   />
 </div>
 
 ---
@@ -460,9 +481,9 @@ Our development process followed an Agile approach, managing tasks and user stor
 💡 [Project Board](https://github.com/users/Tarik-Box/projects/12)
 
 <div align="center">
-    <img src="assets/images/Agile-1.png" alt="User Story Example 1" width="80%" heigh="60%" />
-    <img src="assets/images/Agile-2.png" alt="User Story Example 2" width="80%" heigh="60%" />
-    <img src="assets/images/Agile-3.png" alt="User Story Example 3" width="80%" heigh="60%" />
+    <img src="assets/images/Agile-1.png" alt="User Story Example 1"   />
+    <img src="assets/images/Agile-2.png" alt="User Story Example 2"   />
+    <img src="assets/images/Agile-3.png" alt="User Story Example 3"   />
 </div>
 
 ---
