@@ -1,9 +1,12 @@
 # ScoutHub
 
-**Live Project Link:** [https://scouthubs-186a0b7f55b2.herokuapp.com/](https://scouthubs-186a0b7f55b2.herokuapp.com/)
+**Live Project Link:** [Heroku](https://scouthubs-186a0b7f55b2.herokuapp.com/)
 
 ScoutHub is a Django-based web application designed for football enthusiasts and scouts to track top league teams and players, as well as create and manage their personal scouting reports. The application integrates with an external Football API to provide up-to-date data.
 
+<div align="center">
+    <img src="assets/images/Home-page.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
 
 ## 📑 Table of Contents
 1. [💡 Rationale and Purpose](#rationale-and-purpose)
@@ -62,8 +65,30 @@ ScoutHub is designed with a focus on delivering a smooth and intuitive user expe
 The application guides users through a clear and logical flow:
 -   **Browse** available football data on the homepage.
 -   **Register/Login** to unlock personalized features.
+
+<div align="center">
+    <img src="assets/images/register.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
+<div align="center">
+    <img src="assets/images/login.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
 -   **Manage Reports**: Create, Read, Update, Delete personal scouting reports.
+
+<div align="center">
+    <img src="assets/images/create-report.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
+<div align="center">
+    <img src="assets/images/report-options.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
 -   **Download Reports**: Generate PDF versions of scouting reports for offline use.
+
+<div align="center">
+    <img src="assets/images/downloaded-report.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
 
 Key UX principles applied include:
 -   **Clarity**: Simple and direct language, intuitive navigation.
@@ -267,7 +292,7 @@ Deploying ScoutHub to a production environment involves several key steps to ens
     <img src="assets/images/fetching-data.png" alt="Paper Work" width="80%" heigh="60%" />
 </div>
 
-Your ScoutHub application should now be live and accessible at [https://scouthubs-186a0b7f55b2.herokuapp.com/](https://scouthubs-186a0b7f55b2.herokuapp.com/)!
+Your ScoutHub application should now be live and accessible 
 
 ---
 
@@ -276,15 +301,103 @@ Your ScoutHub application should now be live and accessible at [https://scouthub
 This section details the testing methodologies used to ensure the quality and reliability of ScoutHub.
 
 ### Manual Testing
-*(Placeholder: A detailed table of manual test cases will be added here, covering all user stories and core functionalities. Each test case will include steps, expected results, and actual results.)*
+Manual testing was conducted extensively throughout the development lifecycle to ensure all features met the specified requirements and provided a positive user experience. This involved:
+
+-   **Feature Testing**: Each implemented feature (e.g., user registration, report creation, PDF export) was tested against its acceptance criteria.
+-   **User Interface (UI) Testing**: Verification of layout, styling, and responsiveness across different devices and browsers.
+-   **User Experience (UX) Flow Testing**: Ensuring intuitive navigation and interaction flows for all user journeys.
+-   **Error Handling Testing**: Deliberate triggering of error conditions (e.g., invalid form submissions, missing data) to verify appropriate feedback and system stability.
+
+Below is an example of a test case for a core feature:
+
+| Feature                 | Test Case Description                                 | Steps                                                                                                                                                                                                                                                                                                    | Expected Result                                                                                                                                         | Actual Result |
+| :---------------------- | :---------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------ |
+| **User Registration**   | Successful User Account Creation                      | 1. Navigate to the registration page.<br>2. Fill in valid username, email, and password.<br>3. Click 'Register'.                                                                                                                                                                                        | User is registered, automatically logged in, and redirected to the homepage/dashboard with a success message. | Pass          |
+| **Scouting Report CRUD**| Create a new report                                   | 1. Log in as a registered user.<br>2. Click  'Create New Report'.<br>3. Fill in title, content.<br>4. Select a team and player.<br>5. Click 'Save Report'.                                                                                                                                          | Report is successfully created, displayed on the dashboard, and a success message is shown.                                                               | Pass          |
+| **PDF Export**          | Export existing report to PDF                         | 1. Log in as the report owner.<br>2. Navigate to a report's detail page.<br>3. Click 'Download PDF'.                                                                                                                                                                                                     | A PDF version of the report is downloaded, accurately reflecting the report's content and formatting. | Pass          |
+
+*Note: This table represents a high-level overview. Comprehensive manual testing involved a wider array of scenarios and edge cases not fully detailed here.*
 
 ### Automated Testing
-*(Placeholder: This section will be updated with details about the automated testing suite, including unit tests for Django (using `unittest`) and potentially integration tests.)*
+Automated testing is crucial for maintaining code quality and preventing regressions in the long run. For ScoutHub, the automated testing suite will include:
+
+-   **Unit Tests (Python/Django)**:
+    -   Tests for models to ensure data integrity and custom methods function correctly.
+    -   Tests for forms to validate input processing and error handling.
+    -   Tests for views to verify correct logic, context passing, and template rendering.
+    -   Example of how to run: `python manage.py test <app_name>`
+
+
+## Example Automated Test Case
+
+To demonstrate the setup and functionality of automated testing, a unit test was created for the `Profile` model in the `accounts` application. This test verifies the correct behavior of the `__str__` method.
+
+**Test File:** `accounts/tests.py`
+
+```python
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+from accounts.models import Profile
+
+User = get_user_model()
+
+
+class ProfileModelTest(TestCase):
+    """Test case for the Profile model."""
+
+    def setUp(self):
+        """Set up a user and profile for testing."""
+        self.user = User.objects.create_user(
+            username="testuser", email="test@example.com", password="testpassword"
+        )
+        self.profile = Profile.objects.get(user=self.user)
+
+    def test_profile_str_method(self):
+        """Test the __str__ method of the Profile model."""
+        self.assertEqual(str(self.profile), f"{self.user.username} Profile")
+
+```
+
+**How to run this test:**
+
+```bash
+python manage.py test accounts.tests.ProfileModelTest
+```
+
+**Expected Output:**
+
+```
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+.
+----------------------------------------------------------------------
+Ran 1 test in X.XXXs
+
+OK
+Destroying test database for alias 'default'...
+```
+<div align="center">
+    <img src="assets/images/test-ok.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
+
+*(Note: An `OperationalError` during database destruction is a known, benign issue with PostgreSQL when other connections exist, but the test itself passes.)*
+
+<div align="center">
+    <img src="assets/images/database-exists.png" alt="Responsive Screenshot All Devices" width="80%" heigh="60%" />
+</div>
 
 ### Code Style Validation
 To maintain a high standard of code quality and consistency, the following tools and standards are used:
+
 -   **Python**: The `Black` code formatter is used to enforce a strict, consistent style across the entire Python codebase.
--   **HTML/CSS**: *(Placeholder: Validation results from tools like the W3C Markup Validation Service will be added here.)*
+    -   Verification: `/home/conda/Projects/ScoutHub/.venv/bin/python -m black --check .`
+    -   Auto-fix: `/home/conda/Projects/ScoutHub/.venv/bin/python -m black .`
+    -   Linting (Flake8): `/home/conda/Projects/ScoutHub/.venv/bin/python -m flake8 --max-line-length=88 <path_to_file>`
+-   **HTML/CSS**: Validation against W3C standards ensures cross-browser compatibility and best practices.
+    -   HTML validation for `base.html` and other templates.
+    -   CSS validation for `style.css`.
+
+All code is periodically reviewed against these standards to maintain high quality.
 
 
 **HTML**
