@@ -54,8 +54,8 @@ Ultimately, ScoutHub aims to be an indispensable resource for anyone serious abo
     -   **Read (List):** View a paginated list of all created reports on the user dashboard.
     -   **Read (Detail):** Access a detailed view for individual reports.
     -   **Edit:** Modify existing reports via a pre-filled form with data validation and success messages.
-    -   **Delete:** Users can delete the scouting reports they created easly with cleare delete Button .
-    -   **Delete:** Delete confirmation message will popup after delete Button is trigerd to confirm deletion .
+    -   **Delete:** Users can easily delete their own scouting reports with a clear 'Delete' button.
+    -   **Confirmation:** A confirmation prompt appears to prevent accidental deletions.
 
 -   **Data Synchronization:** Management command to fetch and update football data from the API, respecting rate limits.
 
@@ -158,10 +158,10 @@ The application was developed using a **Mobile-First** approach. This means styl
 
 This project utilizes the following key technologies to deliver its features:
 
--   **Python 3.13.9**: The core programming language.
+-   **Python 3.13**: The core programming language.
 -   **Django**: The high-level Python Web framework.
 -   **PostgreSQL**: The robust relational database management system.
--   **API-Football v3.co**: The external API providing comprehensive football data. *Note: The API-KEY used is a free key, so data may not always be the most up-to-date. You can get a free API_KEY [here](https://www.api-football.com/).*
+-   **API-Football v3**: The external API providing comprehensive football data. *Note: The API-KEY used is a free key, so data may not always be the most up-to-date. You can get a free API_KEY [here](https://www.api-football.com/).*
 -   **HTML5**: For semantic document structure.
 -   **CSS3**: For styling, layout, and responsiveness, leveraging **Bootstrap 5**.
 -   **JavaScript (Vanilla JS)**: For client-side interactivity and dynamic form elements.
@@ -214,7 +214,7 @@ ScoutHub is built upon the Django framework, which inherently follows a Model-Vi
 ### Key Logic Flow
 The application's primary data flow involves:
 
-1.  **API Data Ingestion**: The `core/management/commands/fetch_football_data.py` command fetches real-time football data (teams, players, standings) from API-Football v3.co, processing and storing it in the PostgreSQL database via `core/api_client.py` and the `core/models.py`.
+1.  **API Data Ingestion**: The `core/management/commands/fetch_football_data.py` command fetches real-time football data (teams, players, standings) from API-Football v3, processing and storing it in the PostgreSQL database via `core/api_client.py` and the `core/models.py`.
 2.  **User Authentication**: The `accounts` app manages user registration, login, and logout, utilizing Django's built-in authentication system and custom forms.
 3.  **Homepage Display**: The `web` app's views query the `core` models to retrieve and display top league teams and players on the homepage.
 4.  **Scouting Report Lifecycle**:
@@ -345,7 +345,7 @@ Deploying ScoutHub to a production environment involves several key steps to ens
     <img src="assets/images/fetching-data.png" alt="Paper Work"   />
 </div>
 
-Your ScoutHub application should now be live and accessible 
+Your ScoutHub application should now be live and accessible at your Heroku URL. 
 
 ---
 
@@ -362,7 +362,82 @@ Manual testing was conducted extensively throughout the development lifecycle to
 -   **User Experience (UX) Flow Testing**: Ensuring intuitive navigation and interaction flows for all user journeys.
 -   **Error Handling Testing**: Deliberate triggering of error conditions (e.g., invalid form submissions, missing data) to verify appropriate feedback and system stability.
 
-Below is an example of a test case for a core feature:
+Here is a comprehensive testing checklist to ensure all functionalities work as intended:
+
+#### **Part 1: Unauthenticated Visitor**
+
+As a logged-out visitor, test the following:
+
+-   **[ ] Homepage:**
+    -   [ ] Does the homepage load correctly?
+    -   [ ] Are the "Top 5 League Teams" and "Top 5 League Players" sections visible and populated with data?
+    -   [ ] Do the main navigation links (`Home`, `About`, `Contact`) work?
+    -   [ ] Does the `Register` button take you to the registration page?
+    -   [ ] Does the `Login` button take you to the login page?
+    -   [ ] Do the footer links work?
+    -   [ ] Does the "Go to Top" button appear when you scroll down and work when clicked?
+
+-   **[ ] Other Public Pages:**
+    -   [ ] Does the `About` page load with the correct content?
+    -   [ ] Does the `Contact` page load correctly?
+
+-   **[ ] Responsiveness:**
+    -   [ ] Resize your browser window (or use browser developer tools) to simulate a tablet and a mobile phone.
+    -   [ ] Check the `Home`, `About`, `Contact`, `Login`, and `Register` pages on each size. Does the layout adjust correctly? Is all content readable and usable?
+
+---
+
+#### **Part 2: Authenticated User**
+
+Create a brand new account and log in to test this flow.
+
+-   **[ ] User Registration:**
+    -   [ ] Create a new account with a unique username and email.
+    -   [ ] **Expected Result:** You are successfully registered, logged in automatically, and redirected to the homepage.
+    -   [ ] Try to register again with the *same* username/email.
+    -   [ ] **Expected Result:** You should see validation errors preventing the duplicate account creation.
+
+-   **[ ] Login & Logout:**
+    -   [ ] Log out from your new account.
+    -   [ ] Log back in using the credentials you just created.
+    -   [ ] **Expected Result:** You are successfully logged in. The navbar now shows `Dashboard`, `Profile`, and `Logout`.
+    -   [ ] Click `Logout`.
+    -   [ ] **Expected Result:** You are successfully logged out.
+
+-   **[ ] Scouting Reports (Full CRUD):**
+    -   [ ] **(Create)** Go to the `Dashboard` and click "Create New Report".
+    -   [ ] **(Create)** Select a team from the dropdown. Does the "Player" dropdown update with the correct players for that team?
+    -   [ ] **(Create)** Fill out all fields and save the report.
+    -   [ ] **Expected Result:** The report is saved, you see a success message, and the new report appears on your dashboard.
+    -   [ ] **(Read)** Click the title of the new report on your dashboard. Does it take you to the correct report detail page?
+    -   [ ] **(Update)** On the detail page, click "Edit Report". Change the title or content and save.
+    -   [ ] **Expected Result:** The report is updated, and you see the changes on the detail page.
+    -   [ ] **(Visibility)** On the detail page, toggle the visibility from "Private" to "Public" or vice-versa. Does the status update correctly?
+    -   [ ] **(PDF)** On the detail page, click "Download PDF".
+    -   [ ] **Expected Result:** A PDF of the report is downloaded.
+    -   [ ] **(Delete)** On the detail page, click "Delete Report" and confirm.
+    -   [ ] **Expected Result:** The report is deleted, and it no longer appears on your dashboard.
+
+-   **[ ] User Profile:**
+    -   [ ] Go to the `Profile` page.
+    -   [ ] Update your bio and other fields.
+    -   [ ] Click "Update Profile".
+    -   [ ] **Expected Result:** A success message appears, and all your *text-based* information (bio, etc.) is updated correctly.
+    -   [ ] **Note:** The profile picture field is for presentation only; actual image files are not stored or uploaded on this deployment.
+
+---
+
+#### **Part 3: Django Admin (Superuser)**
+
+Log in to the `/admin/` URL with your superuser account.
+
+-   **[ ] Admin Functionality:**
+    -   [ ] Can you see all the models (`Users`,  `Teams`, `Players`, `Reports`, etc.)?
+    -   [ ] Can you view the details of the test user you created above ?
+    -   [ ] **(Critical)** Select that test user and delete them using the admin "action" dropdown.
+    -   [ ] **Expected Result:** The user is deleted successfully .
+
+An example of a test case for a core feature with "Expected Result and the Actual Result after the test is done:
 
 | Feature                 | Test Case Description                                 | Steps                                                                                                                                                                                                                                                                                                    | Expected Result                                                                                                                                         | Actual Result |
 | :---------------------- | :---------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------ |
@@ -482,7 +557,7 @@ All code is periodically reviewed against these standards to maintain high quali
 
 Most, if not all, the flake8 warnings have been resolved. 
 Below is a screenshot of the flake8 output, indicating that the Python code is linted.
-Remaining warnings are primarily for the unavoidable line length
+Remaining warnings are primarily for unavoidable line-length issues.
 
 <div align="center">
     <img src="assets/images/flake8-screenshot.png" alt="Paper Work"/>
@@ -545,7 +620,7 @@ Our development process followed an Agile approach, managing tasks and user stor
 
 ---
 
-### 4: Putting Idea into Live
+### 4: Bringing the Idea to Life
 Getting the project off the ground with Django's modular application structure.
 -   `accounts`: Handles user authentication and profiles.
 -   `core`: Manages core football data models and API integrations.
@@ -560,17 +635,17 @@ A look at some challenges encountered and their resolutions.
 
 <div align="center">
     <img src="assets/images/player-images-bug.png" alt="Player Image Not Displayed Bug" width="60%" />
-    <p><em>Fixing a broken image link by correcting `player.image.url` to `player.image_url` in the template.</em></p>
+    <p><em>**Bug:** Player images were not displaying. <br> **Fix:** Corrected the template tag from `player.image.url` to the correct model property `player.image_url`.</em></p>
 </div>
 
 <div align="center">
     <img src="assets/images/noreversematch_login.png" alt="NoReverseMatch Error" width="60%" />
-    <p><em>Resolving a `NoReverseMatch` error by using a namespaced URL: `{% url 'accounts:login' %}`.</em></p>
+    <p><em>**Bug:** A `NoReverseMatch` error occurred on the login link. <br> **Fix:** Resolved by using a namespaced URL in the template: `{% url 'accounts:login' %}`.</em></p>
 </div>
 
 <div align="center">
     <img src="assets/images/player-list-empty.png" alt="Empty Players List Bug" width="60%" />
-    <p><em>Debugging a dynamic dropdown that failed because a generic `querySelector('form')` selected the wrong form. Fixed by using a unique ID selector (`#create-report-form`).</em></p>
+    <p><em>**Bug:** The dynamic player dropdown remained empty after selecting a team. <br> **Fix:** The JavaScript `querySelector('form')` was too generic. Resolved by targeting the form with a unique ID selector: `#create-report-form`.</em></p>
 </div>
 
 ---
@@ -625,9 +700,9 @@ This project was developed by **Tarik Box**.
 -   **requests**: For making API calls.
 -   **whitenoise**: For serving static files in production.
 -   **gunicorn**: Production-ready WSGI server.
--   **API-Football v3.co**: The external API providing football data.
+-   **API-Football v3**: The external API providing football data.
 -   **Bootstrap 5**: For responsive, mobile-first design.
--   **Gemini-Cli**: For its great help with explaining and debuging bugs/code and more withen this project.
+-   **Gemini-Cli**: For assistance with code explanation, debugging, and project documentation.
 
 ### External Links
 -   [Corey Schafer's Django Playlist](https://www.youtube.com/watch?v=UmljXZIypDc&list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p)

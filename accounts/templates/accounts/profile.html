@@ -65,6 +65,7 @@
 
                     <div class="mb-3">
                         <label for="{{ profile_form.profile_picture.id_for_label }}" class="form-label">Profile Picture:</label>
+                        <p class="form-text text-danger">Note: Profile picture is for presentation only; actual image uploads are not supported on this deployment.</p>
                         {{ profile_form.profile_picture }}
                         {% if profile_form.profile_picture.errors %}
                             <div class="text-danger">
