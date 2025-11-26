@@ -8,7 +8,8 @@ ScoutHub is a Django-based web application designed for football enthusiasts and
     <img src="assets/images/Home-page.png" alt="Responsive Screenshot All Devices"   />
 </div>
 
-## 📑 Table of Contents
+📑
+## Table of Contents
 1. [💡 Rationale and Purpose](#rationale-and-purpose)
 2. [✨ Features](#features)
 3. [🧠 User Experience (UX) & Accessibility](#user-experience-ux--accessibility)
@@ -16,16 +17,18 @@ ScoutHub is a Django-based web application designed for football enthusiasts and
 5. [🛠️ Technologies Used](#technologies-used)
 6. [📂 File Structure](#file-structure)
 7. [🧰 Code Structure and Logic](#code-structure-and-logic)
-8. [🚀 Deployment](#deployment)
-9. [⚙️ Testing](#testing)
-10. [🚀 Development Walkthrough](#development-walkthrough)
-11. [🌱 Future Improvements](#future-improvements)
-12. [🤝 Contributing](#contributing)
-13. [📝 Credits](#credits)
-14. [⚖️ License](#license)
+8. [💾 Database Schema (ERD)](#database-schema-erd)
+9. [🚀 Deployment](#deployment)
+10. [⚙️ Testing](#testing)
+11. [🚀 Development Walkthrough](#development-walkthrough)
+12. [🌱 Future Improvements](#future-improvements)
+13. [🤝 Contributing](#contributing)
+14. [📝 Credits](#credits)
+15. [⚖️ License](#license)
 
 ---
 
+💡
 ## Rationale and Purpose
 
 The primary goal of ScoutHub is to empower football enthusiasts, scouts, and analysts with a centralized platform to manage and analyze critical player and team data. It addresses the need for an intuitive tool to:
@@ -39,6 +42,7 @@ Ultimately, ScoutHub aims to be an indispensable resource for anyone serious abo
 
 ---
 
+✨
 ## Features
 
 ### Core Functionality
@@ -57,6 +61,7 @@ Ultimately, ScoutHub aims to be an indispensable resource for anyone serious abo
 
 ---
 
+🧠
 ## User Experience (UX) & Accessibility
 
 ScoutHub is designed with a focus on delivering a smooth and intuitive user experience (UX) for all users, alongside robust accessibility (A11y) to ensure broad usability.
@@ -108,7 +113,8 @@ ScoutHub is built with accessibility in mind, utilizing fundamental semantic HTM
 
 ---
 
-## 📱 Responsiveness
+📱
+## Responsiveness
 
 ScoutHub is designed to be fully responsive, providing an optimal viewing and interaction experience across a wide range of devices, from desktops to mobile phones.
 
@@ -147,7 +153,8 @@ The application was developed using a **Mobile-First** approach. This means styl
 </div>
 
 ---
-## 🛠️ Technologies Used
+🛠️
+## Technologies Used
 
 This project utilizes the following key technologies to deliver its features:
 
@@ -169,7 +176,8 @@ This project utilizes the following key technologies to deliver its features:
 
 ---
 
-## 📂 File Structure
+📂
+## File Structure
 
 A high-level overview of the ScoutHub project's directory structure.
 
@@ -189,7 +197,8 @@ ScoutHub/
 ```
 
 ---
-## 🧰 Code Structure and Logic
+🧰
+## Code Structure and Logic
 
 This section provides insights into the overall architecture, key design patterns, and how different components of the ScoutHub application interact to deliver its functionality.
 
@@ -215,7 +224,51 @@ The application's primary data flow involves:
 
 ---
 
-## 🚀 Deployment
+💾
+## Database Schema (ERD)
+
+Here is a breakdown of the main data relationships in ScoutHub:
+
+**User and Profile Relationship:**
+
+```
+[ User ]
+   |
+   +-- (has one) -------> [ Profile ]  (One-to-One)
+```
+
+**User and Report Relationship:**
+
+```
+[ User ]
+   |
+   +-- (creates many) --> [ Report ]   (One-to-Many)
+```
+
+**Team and Player Relationship:**
+
+```
+[ Team ]
+   |
+   +-- (has many) ------> [ Player ]   (One-to-Many)
+```
+
+**Report, Team, and Player Relationships:**
+
+```
+[ Report ]
+   |
+   +-- (references many) <--> [ Team ]     (Many-to-Many)
+   |
+   +-- (references many) <--> [ Player ]   (Many-to-Many)
+```
+
+You can see the initial ERD concept on the [Paper Work page](#1-paper-work) in the Development Walkthrough section.
+
+---
+
+🚀
+## Deployment
 
 Deploying ScoutHub to a production environment involves several key steps to ensure it runs efficiently and is accessible to users. This guide outlines the process for deployment using Heroku.
 
@@ -296,7 +349,8 @@ Your ScoutHub application should now be live and accessible
 
 ---
 
-## ⚙️ Testing
+⚙️
+## Testing
 
 This section details the testing methodologies used to ensure the quality and reliability of ScoutHub.
 
@@ -448,7 +502,8 @@ Below is a screenshot of the `Black` formatter output confirming that the Python
 ---
 
 
-## 🚀 Development Walkthrough
+🚀
+## Development Walkthrough
 
 This section details the journey of ScoutHub, from initial concepts to a live application, touching upon design, agile methodologies, and bug resolution.
 
@@ -532,7 +587,8 @@ The working application in action.
 
 ---
 
-## 🌱 Future Improvements
+🌱
+## Future Improvements
 
 -   **Advanced Search and Filtering**: For scouting reports based on player attributes, team, date, or ratings.
 -   **User Collaboration**: Features for sharing reports with other users or teams.
@@ -542,7 +598,8 @@ The working application in action.
 
 ---
 
-## 🤝 Contributing
+🤝
+## Contributing
 
 We welcome contributions! Please follow these guidelines:
 1.  **Fork the Repository**: From `https://github.com/Tarik-Box/ScoutHub`.
@@ -556,7 +613,8 @@ We welcome contributions! Please follow these guidelines:
 
 ---
 
-## 📝 Credits
+📝
+## Credits
 
 This project was developed by **Tarik Box**.
 
@@ -579,6 +637,7 @@ This project was developed by **Tarik Box**.
 
 ---
 
-## ⚖️ License
+⚖️
+## License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.
