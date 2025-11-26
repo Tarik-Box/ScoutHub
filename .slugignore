@@ -1,0 +1,14 @@
+# Documentation
+/assets/
+/bugsAndDebug.md
+/README.md
+
+# Git
+.gitattributes
+
+# Python cache
+*.pyc
+__pycache__/
+
+# Local development files
+.venv/
